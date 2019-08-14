@@ -1,3 +1,5 @@
+print('hello!')
+"""
 import os, subprocess, time
 
 #get home and where to clone to
@@ -18,3 +20,4 @@ os.system(("cd "+ cwd))
 callfreind = "python " + cwd + "\\Turtle.py"
 subprocess.Popen(callfreind)
 print("Updated!")
+"""

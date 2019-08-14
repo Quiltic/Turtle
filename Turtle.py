@@ -28,7 +28,7 @@ async def update(ctx):
 
     print("changed cd")
     #open update
-    callfreind = "python TurtleUpdate.py"
+    callfreind = "python " + cwd + "\\TurtleUpdate.py"
     print(callfreind)
     subprocess.Popen(callfreind)
     print("Summoned!")
