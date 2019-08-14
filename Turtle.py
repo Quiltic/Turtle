@@ -1,11 +1,6 @@
-import asyncio
-import sys
-import time
-import discord
-import random
-import os
+import asyncio, discord, subprocess
+import time, random, os, sys
 from discord.ext import commands
-import subprocess
 #from pydub import AudioSegment
 #from guild_info import GuildInfo
 
@@ -17,12 +12,28 @@ prefix = '[]'
 bot = commands.Bot(prefix)
 currStatus = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
 
+#get home directory
+cwd = os.getcwd()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Admin Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+@bot.command()
+async def update(ctx):
+    #go home you lazy bumb
+    os.system(("cd "+ cwd))
 
+    #open update
+    callfreind = "python " + cwd + "\\TurtleUpdate.py"
+    subprocess.Popen(callfreind)
+    print("Summoned!")
+    
+    #turn off
+    perish(ctx)
+
+    
 def rename_file(old_filepath, new_filepath):
     os.rename(old_filepath, new_filepath)
 
@@ -114,7 +125,7 @@ async def dice(ctx):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-#this is broken
+#this is broken?
 async def sendmsg(ctx,msg):
     await ctx.send(msg)
 
@@ -182,6 +193,7 @@ async def leave(ctx):
 #Turn off
 @bot.command()
 async def perish(ctx):
+    print("Bye!")
     await bot.close()
 
 
