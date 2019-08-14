@@ -22,6 +22,7 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
+
     #go home you lazy bumb
     os.system(("cd "+ cwd))
 
@@ -121,6 +122,9 @@ async def dice(ctx):
         await sendmsg(message, "Discord doesent like long stuffs so here is the summup.")
         await sendmsg(message, 'Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
 
+
+async def Yell(ctx):
+    await sendmsg(ctx,ctx.msg)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Commands ###################
