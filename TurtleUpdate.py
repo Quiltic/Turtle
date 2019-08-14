@@ -21,7 +21,7 @@ time.sleep(10)
 callfreind = "python3 " + cwd + "/Turtle.py"
 os.system("ls")
 print(callfreind)
-os.execvp("Turtle.py",[])
+os.execvp("Turtle.py",[''])
 #subprocess.Popen(callfreind)
 print("Updated!")
 
