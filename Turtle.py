@@ -125,7 +125,7 @@ async def dice(ctx):
 
 @bot.command()
 async def Yell(ctx):
-    await sendmsg(ctx,ctx.msg)
+    await sendmsg(ctx,"AGGGG")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Commands ###################
