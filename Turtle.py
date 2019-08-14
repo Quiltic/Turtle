@@ -75,25 +75,32 @@ def delete_file(file, guild):
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 @bot.command()
-async def dice(ctx):
-    addon = '0'
-    await sendmsg(ctx, randomnum(1,20))
+async def r(ctx, *args):
+    stuff = await dice(ctx, *args)
+    await sendmsg(ctx,stuff)
 
-    message = ctx
+
+async def dice(ctx, *args):
+    addon = '0'
+    #await sendmsg(ctx, randomnum(1,20))
+
+    message = '[]r ' + str(' '.join(args)).lower()
+    print (message)
     
-    if "+" in message.content.lower():
-        addon = message.content.lower()[message.content.lower().index("+"):]
-        message.content = message.content[:message.content.lower().index("+")]
-    elif "-" in message.content.lower():
-        addon = message.content.lower()[message.content.lower().index("-"):]
-        message.content = message.content[:message.content.lower().index("-")]
     
-    if "[]r 2d20" in message.content.lower():
-        await sendmsg(ctx,'d20: %i' % (randomnum(1,20)))
+    if "+" in message:
+        addon = message[message.index("+"):]
+        message = message[:message.index("+")]
+    elif "-" in message:
+        addon = message[message.index("-"):]
+        message = message[:message.index("-")]
+    
+    if " 2d20" in message:
+        #await sendmsg(ctx,'d20: %i' % (randomnum(1,20)))
         msg = 'd20: %i' % (randomnum(1,20))
 
-    elif (message.content.lower() != "[]r +") and (message.content.lower() != "[]r -") and (message.content.lower() != "[]r"):
-        numbers = (message.content.lower().replace("[]r ",''))
+    elif (message != "[]r +") and (message != "[]r -") and (message != "[]r "):
+        numbers = (message.replace("[]r ",''))
         numbers = numbers.replace("d", ' ')
         split = numbers.index(" ")
         
@@ -106,7 +113,8 @@ async def dice(ctx):
                 curdice = randomnum(1,int(numbers[split+1:]))
                 total += curdice
                 msg = msg + '+ %i ' % (curdice)
-            total = int(eval(str(total)+addon))
+            if (addon != '0'):
+                total = int(eval(str(total)+addon))
             if addon != '0':
                 msg = msg + addon[0] + " " + addon[1:] +"= %i" % (total)
             else:
@@ -121,10 +129,11 @@ async def dice(ctx):
     try:
         if msg == 'grumbel':
             error#just error 
-        await sendmsg(ctx, msg)
     except:
         await sendmsg(ctx, "Discord doesent like long stuffs so here is the summup.")
-        await sendmsg(ctx, 'Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
+        msg = ('Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
+    
+    return(msg)
 
 @bot.command()
 async def Yell(ctx):
