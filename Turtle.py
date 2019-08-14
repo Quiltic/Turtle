@@ -28,7 +28,8 @@ async def update(ctx):
 
     print("changed cd")
     #open update
-    callfreind = "python3 " + cwd + "\\TurtleUpdate.py"
+    callfreind = "python TurtleUpdate.py"
+    print(callfreind)
     subprocess.Popen(callfreind)
     print("Summoned!")
     
@@ -76,6 +77,8 @@ def delete_file(file, guild):
 @bot.command()
 async def dice(ctx):
     addon = '0'
+    await sendmsg(ctx, randomnum(1,20))
+
     message = ctx
     
     if "+" in message.content.lower():
@@ -86,7 +89,7 @@ async def dice(ctx):
         message.content = message.content[:message.content.lower().index("-")]
     
     if "[]r 2d20" in message.content.lower():
-        await sendmsg(message,'d20: %i' % (randomnum(1,20)))
+        await sendmsg(ctx,'d20: %i' % (randomnum(1,20)))
         msg = 'd20: %i' % (randomnum(1,20))
 
     elif (message.content.lower() != "[]r +") and (message.content.lower() != "[]r -") and (message.content.lower() != "[]r"):
