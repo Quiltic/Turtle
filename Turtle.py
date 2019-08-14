@@ -190,7 +190,7 @@ async def on_command_error(ctx, e):
     if type(e) is commands.errors.CommandInvokeError:
         e = e.original
         if type(e) is TurtleException:
-            print(f'{t.RED}Caught TurtleException: ' + str(e))
+            print('Caught TurtleException: ' + str(e))
             await ctx.send(e.message)
     else:
         raise e
@@ -209,13 +209,13 @@ async def on_ready():
     global guilds
     await bot.change_presence(activity=currStatus)
 
-    guilds = dict()
-    for guild in bot.guilds:
-        guilds[guild.id] = GuildInfo(guild)
+    #guilds = dict()
+    #for guild in bot.guilds:
+    #    guilds[guild.id] = GuildInfo(guild)
 
-    print(f'Logged into {str(len(guilds))} guilds:')
-    for guild in list(guilds.values()):
-        print(f'\t{guild.name}:{guild.id}')
+    #print(f'Logged into {str(len(guilds))} guilds:')
+    #for guild in list(guilds.values()):
+    #    print(f'\t{guild.name}:{guild.id}')
     print("Let's Do This!")
 
 
