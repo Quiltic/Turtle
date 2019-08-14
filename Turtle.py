@@ -22,7 +22,7 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
-
+    print("On")
     #go home you lazy bumb
     os.system(("cd "+ cwd))
 
