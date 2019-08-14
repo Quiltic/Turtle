@@ -123,7 +123,7 @@ async def dice(ctx):
         await sendmsg(message, "Discord doesent like long stuffs so here is the summup.")
         await sendmsg(message, 'Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
 
-
+@bot.command()
 async def Yell(ctx):
     await sendmsg(ctx,ctx.msg)
 
