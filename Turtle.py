@@ -273,4 +273,4 @@ if __name__ == '__main__':
     #except:
     #    pass
 
-    bot.run(token)
+    bot.run(token.strip())
