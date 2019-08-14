@@ -19,6 +19,7 @@ os.system(("cd "+ cwd))
 #reopen turtle
 time.sleep(10)
 callfreind = "python3 " + cwd + "/Turtle.py"
+os.system("ls")
 print(callfreind)
 subprocess.Popen(callfreind)
 print("Updated!")
