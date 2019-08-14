@@ -2,12 +2,11 @@ import os, subprocess, time
 
 #get home and where to clone to
 cwd = os.getcwd()
-mainfile = cwd[:cwd.rfind('\\')]
+#mainfile = cwd[:cwd.rfind('\\')]
 print(cwd)
-print(mainfile)
 
 #Clone to location
-os.system(("cd "+ mainfile))
+os.system(("cd "+ cwd))
 os.system("git pull https://github.com/Quiltic/Turtle.git")
 print("cloned")
 
