@@ -22,12 +22,14 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
+    print("On")
 
     #go home you lazy bumb
     os.system(("cd "+ cwd))
 
+    print("changed cd")
     #open update
-    callfreind = "python " + cwd + "\\TurtleUpdate.py"
+    callfreind = "python3 " + cwd + "\\TurtleUpdate.py"
     subprocess.Popen(callfreind)
     print("Summoned!")
     
