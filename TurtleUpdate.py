@@ -1,10 +1,11 @@
 import os, subprocess, time
 
+time.sleep(10)
 #get home and where to clone to
 cwd = os.getcwd()
-mainfile = cwd[:cwd.rfind('\\')]
+#mainfile = cwd[:cwd.rfind('\\')]
 print(cwd)
-print(mainfile)
+
 
 #Clone to location
 os.system(("cd " + cwd))
@@ -16,7 +17,10 @@ time.sleep(3)
 os.system(("cd "+ cwd))
 
 #reopen turtle
+time.sleep(10)
 callfreind = "python " + cwd + "\\Turtle.py"
 print(callfreind)
 subprocess.Popen(callfreind)
 print("Updated!")
+
+print("Turning off")

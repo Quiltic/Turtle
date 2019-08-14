@@ -22,19 +22,26 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
+
+    await sendmsg(ctx,"Updating")
     print("On")
+    print(cwd)
     #go home you lazy bumb
     os.system(("cd "+ cwd))
 
+    await sendmsg(ctx,"Directory changed")
     print("changed cd")
     #open update
     callfreind = "python " + cwd + "/TurtleUpdate.py"
     print(callfreind)
     subprocess.Popen(callfreind)
+
+    await sendmsg(ctx,"Opened Friend!")
     print("Summoned!")
     
     #turn off
-    perish(ctx)
+    await sendmsg(ctx,"I'LL BE BACK!")
+    turnoff(ctx)
 
     
 def rename_file(old_filepath, new_filepath):
@@ -210,9 +217,15 @@ async def leave(ctx):
 #Turn off
 @bot.command()
 async def perish(ctx):
+    await sendmsg(ctx,"Im off now.")
     print("Bye!")
     await bot.close()
 
+#Turn off for the bot
+async def turnoff(ctx):
+    await sendmsg(ctx,"Restarting?")
+    print("Bye!")
+    await bot.close()
 
 @bot.event
 async def on_command_error(ctx, e):
