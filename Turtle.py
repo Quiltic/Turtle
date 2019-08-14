@@ -118,10 +118,10 @@ async def dice(ctx):
     try:
         if msg == 'grumbel':
             error#just error 
-        await sendmsg(message, msg)
+        await sendmsg(ctx, msg)
     except:
-        await sendmsg(message, "Discord doesent like long stuffs so here is the summup.")
-        await sendmsg(message, 'Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
+        await sendmsg(ctx, "Discord doesent like long stuffs so here is the summup.")
+        await sendmsg(ctx, 'Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
 
 @bot.command()
 async def Yell(ctx):
