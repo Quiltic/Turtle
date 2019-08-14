@@ -32,7 +32,7 @@ async def update(ctx):
     await sendmsg(ctx,"Directory changed")
     print("changed cd")
     #open update
-    callfreind = "python " + cwd + "/TurtleUpdate.py"
+    callfreind = "python " + cwd + "//TurtleUpdate.py"
     print(callfreind)
     subprocess.Popen(callfreind)
 
@@ -40,10 +40,20 @@ async def update(ctx):
     print("Summoned!")
     
     #turn off
-    await sendmsg(ctx,"I'LL BE BACK!")
-    turnoff(ctx)
+    await turnoff(ctx)
 
-    
+
+#this uploads turtle to github if enabled.
+@bot.command()
+async def upload(ctx):
+    os.system(("cd "+ cwd))
+    os.system("git add .")
+    time.sleep(1)
+    os.system("git commit -m Turtle pushed me.")
+    time.sleep(3)
+    os.system("git push")
+
+
 def rename_file(old_filepath, new_filepath):
     os.rename(old_filepath, new_filepath)
 
