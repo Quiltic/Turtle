@@ -304,7 +304,7 @@ if __name__ == '__main__':
 
     #logging.basicConfig(level=logging.ERROR)
 
-    file = open('Token.txt')
+    file = open('/home/pi/Turtle/Token.txt')
     token = file.read()
     file.close()
 

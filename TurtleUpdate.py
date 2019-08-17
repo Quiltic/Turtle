@@ -2,7 +2,7 @@ import os, subprocess, time
 
 time.sleep(10)
 #get home and where to clone to
-cwd = os.getcwd()
+cwd = "/home/pi/Turtle"#os.getcwd()
 #mainfile = cwd[:cwd.rfind('\\')]
 print(cwd)
 
