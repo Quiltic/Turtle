@@ -32,9 +32,10 @@ async def update(ctx):
     await sendmsg(ctx,"Directory changed")
     print("changed cd")
     #open update
-    callfreind = "python3 " + cwd + "/TurtleUpdate.py"
+    callfreind = "python3 /home/pi/Turtle/TurtleUpdate.py &"
     print(callfreind)
-    subprocess.Popen(callfreind)
+    os.system(callfreind)
+    #subprocess.Popen(callfreind)
 
     await sendmsg(ctx,"Opened Friend!")
     print("Summoned!")
