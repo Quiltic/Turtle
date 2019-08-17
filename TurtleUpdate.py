@@ -18,7 +18,7 @@ os.system(("cd "+ cwd))
 
 #reopen turtle
 time.sleep(10)
-callfreind = "sudo python3 " + cwd + "/Turtle.py &"
+callfreind = "python3 " + cwd + "/Turtle.py &"
 os.system("ls")
 print(callfreind)
 os.system(callfreind)
