@@ -8,6 +8,9 @@ except:
     os.system("python3 -m pip install discord.py")
     import discord
     from discord.ext import commands
+
+import aiohttp
+
 #from pydub import AudioSegment
 #from guild_info import GuildInfo
 
@@ -16,7 +19,7 @@ except:
 #tts_path = 'resources/voice.exe'
 
 prefix = '[]'
-bot = commands.Bot(prefix)
+bot = commands.Bot(prefix, connector=aiohttp.TCPConnector(verify_ssl=False))
 currStatus = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
 
 #get home directory
