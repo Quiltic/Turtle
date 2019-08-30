@@ -315,7 +315,7 @@ if __name__ == '__main__':
 
     #logging.basicConfig(level=logging.ERROR)
 
-    file = open('/home/pi/Turtle/Token.txt')
+    file = open("Token.txt")#open('/home/pi/Turtle/Token.txt')
     token = file.read()
     file.close()
 
@@ -324,4 +324,5 @@ if __name__ == '__main__':
     #except:
     #    pass
     print(token)
+    input()
     bot.run(token.strip())
