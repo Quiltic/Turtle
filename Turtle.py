@@ -313,5 +313,5 @@ if __name__ == '__main__':
     #    os.makedirs(os.path.join('resources','soundclips','temp'))
     #except:
     #    pass
-
+    print(token)
     bot.run(token.strip())
