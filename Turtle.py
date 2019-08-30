@@ -323,6 +323,6 @@ if __name__ == '__main__':
     #    os.makedirs(os.path.join('resources','soundclips','temp'))
     #except:
     #    pass
-    print(token)
+    print(token.strip())
     input()
     bot.run(token.strip())
