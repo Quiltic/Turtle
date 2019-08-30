@@ -19,7 +19,7 @@ import aiohttp
 #tts_path = 'resources/voice.exe'
 
 prefix = '[]'
-bot = commands.Bot(prefix, connector=aiohttp.TCPConnector(verify_ssl=False))
+bot = commands.Bot(prefix)#, connector=aiohttp.TCPConnector(ssl=False)
 currStatus = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
 
 #get home directory
@@ -315,7 +315,10 @@ if __name__ == '__main__':
 
     #logging.basicConfig(level=logging.ERROR)
 
-    file = open("Token.txt")#open('/home/pi/Turtle/Token.txt')
+    try:
+        file = open("Token.txt")
+    except:
+        file = open('/home/pi/Turtle/Token.txt')
     token = file.read()
     file.close()
 
@@ -323,6 +326,6 @@ if __name__ == '__main__':
     #    os.makedirs(os.path.join('resources','soundclips','temp'))
     #except:
     #    pass
-    print(token.strip())
-    input()
+    #print(token.strip())
+    #input()
     bot.run(token.strip())
