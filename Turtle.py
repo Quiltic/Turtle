@@ -65,6 +65,13 @@ async def upload(ctx):
     os.system("git push")
 
 
+@bot.command()
+async def ipadress(ctx):
+    await ctx.send(os.system("ifconfig"))
+
+
+
+
 def rename_file(old_filepath, new_filepath):
     os.rename(old_filepath, new_filepath)
 
