@@ -1,6 +1,13 @@
-import asyncio, discord, subprocess
+import asyncio, subprocess
 import time, random, os, sys
-from discord.ext import commands
+
+try:
+    import discord
+    from discord.ext import commands
+except:
+    os.system("python3 -m pip install discord.py")
+    import discord
+    from discord.ext import commands
 #from pydub import AudioSegment
 #from guild_info import GuildInfo
 
