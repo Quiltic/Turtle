@@ -9,8 +9,6 @@ except:
     import discord
     from discord.ext import commands
 
-import aiohttp
-
 #from pydub import AudioSegment
 #from guild_info import GuildInfo
 
@@ -32,42 +30,48 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
+    if check_perms(ctx):
+        await sendmsg(ctx,"Updating")
+        print("On")
+        print(cwd)
+        #go home you lazy bumb
+        os.system(("cd "+ cwd))
 
-    await sendmsg(ctx,"Updating")
-    print("On")
-    print(cwd)
-    #go home you lazy bumb
-    os.system(("cd "+ cwd))
+        await sendmsg(ctx,"Directory changed")
+        print("changed cd")
+        #open update
+        callfreind = "python3 /home/pi/Turtle/TurtleUpdate.py &"
+        print(callfreind)
+        os.system(callfreind)
+        #subprocess.Popen(callfreind)
 
-    await sendmsg(ctx,"Directory changed")
-    print("changed cd")
-    #open update
-    callfreind = "python3 /home/pi/Turtle/TurtleUpdate.py &"
-    print(callfreind)
-    os.system(callfreind)
-    #subprocess.Popen(callfreind)
-
-    await sendmsg(ctx,"Opened Friend!")
-    print("Summoned!")
-    
-    #turn off
-    await turnoff(ctx)
+        await sendmsg(ctx,"Opened Friend!")
+        print("Summoned!")
+        
+        #turn off
+        await turnoff(ctx)
 
 
 #this uploads turtle to github if enabled.
-@bot.command()
+#@bot.command()
 async def upload(ctx):
-    os.system(("cd "+ cwd))
-    os.system("git add .")
-    time.sleep(1)
-    os.system("git commit -m Turtle pushed me.")
-    time.sleep(3)
-    os.system("git push")
+    if check_perms(ctx):
+        os.system(("cd "+ cwd))
+        os.system("git add .")
+        time.sleep(1)
+        os.system("git commit -m Turtle pushed me.")
+        time.sleep(3)
+        os.system("git push")
 
 
 @bot.command()
 async def ipadress(ctx):
-    await ctx.send(os.system("ifconfig"))
+    if check_perms(ctx):
+        import socket    
+        hostname = socket.gethostname()    
+        IPAddr = socket.gethostbyname(hostname)  
+        
+        await ctx.send(IPAddr)
 
 
 
@@ -82,15 +86,19 @@ def getText(file):
         return lines.strip()
 
 
-def check_perms(user, action):
-    if action is 'update':
-        if get_bertle() == user:
-            return
-        else:
-            raise TurtleException('invalid permissions to update',
-                                 'You don\'t got permission to do that, pardner.')
+def check_perms(ctx):
+    user = ctx.author.id
+
+    #if action is 'update':
+    if get_bertle() == user:
+        return(True)
     else:
-        raise NotImplementedError()
+        ctx.send("Sorry, but you dont have acsess to that.")
+        return(False)
+        #raise TurtleException('invalid permissions to update',
+        #                     'You don\'t got permission to do that, pardner.')
+    #else:
+    #    raise NotImplementedError()
 
 
 def get_bertle():
@@ -312,6 +320,8 @@ async def on_message(message):
     elif message.author == bot.user:
         print("Something else.")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
+        if (message.connect):
+
 
     await bot.process_commands(message)
 
