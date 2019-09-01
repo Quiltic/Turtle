@@ -95,7 +95,7 @@ async def check_perms(ctx):
     if bertle == user:
         return(True)
     else:
-        await ctx.send("Sorry, but you dont have acsess to that.")
+        await ctx.send("Sorry, but you dont have access to that.")
         return(False)
         #raise TurtleException('invalid permissions to update',
         #                     'You don\'t got permission to do that, pardner.')
