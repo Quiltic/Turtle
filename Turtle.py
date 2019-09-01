@@ -245,7 +245,7 @@ async def dice(ctx, *args):
 #this is from old turtle but i still love it
 async def conversate(message):
     global cur_user
-    
+
     if "make me a sandwich" in message.content.lower(): # simple ping
         await sendmsg(message, "Here you go!")
         await message.channel.send(file=discord.File('Sandwich.jpg'))
@@ -437,8 +437,10 @@ async def on_message(message):
             await sendmsg(message, "Your welcome!")
 
     elif message.author == bot.user:
-        print("Something else.")
+        print("Im talking:")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
+    else:
+        print(message.content)
 
 
     await bot.process_commands(message)
