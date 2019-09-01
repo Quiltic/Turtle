@@ -149,8 +149,8 @@ async def weather(ctx):
     msg = "Currently: " + data["Description"]
     timestuff = "Around: "+ data["Time"]
     weatherEmbed=discord.Embed(title=timestuff, description=msg, color=0x1c57e3)
-    weatherEmbed.set_author(name="Turtle's Forecast", icon_url="Tertle.png") # Change the icon back to shigure
-    weatherEmbed.set_thumbnail(url="Tertle.png")
+    weatherEmbed.set_author(name="Turtle's Forecast") #icon_url="Tertle.png" 
+    #weatherEmbed.set_thumbnail(url="Tertle.png")
     weatherEmbed.add_field(name="Current Tempterture (F):", value=data["Temp"], inline=True)
     weatherEmbed.add_field(name="Feels like Tempterture (F):", value=data["Feels"], inline=True)
     weatherEmbed.add_field(name="Humidity: ", value=data["Humidity"], inline=True)
