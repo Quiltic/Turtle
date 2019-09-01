@@ -30,7 +30,7 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
-    if check_perms(ctx):
+    if await check_perms(ctx):
         await sendmsg(ctx,"Updating")
         print("On")
         print(cwd)
@@ -55,7 +55,7 @@ async def update(ctx):
 #this uploads turtle to github if enabled.
 @bot.command()
 async def upload(ctx):
-    if check_perms(ctx):
+    if await check_perms(ctx):
         os.system(("cd "+ cwd))
         os.system("git add .")
         time.sleep(1)
@@ -66,7 +66,7 @@ async def upload(ctx):
 
 @bot.command()
 async def ipadress(ctx):
-    if check_perms(ctx):
+    if await check_perms(ctx):
         import socket    
         hostname = socket.gethostname()    
         IPAddr = socket.gethostbyname(hostname)  
@@ -89,9 +89,10 @@ def getText(file):
 async def check_perms(ctx):
     print("Checking")
     user = ctx.author.id
-    print(get_bertle(),user)
+    bertle = get_bertle() 
+    print(bertle,user)
     #if action is 'update':
-    if get_bertle() == user:
+    if bertle == user:
         return(True)
     else:
         await ctx.send("Sorry, but you dont have acsess to that.")
