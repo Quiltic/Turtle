@@ -159,7 +159,7 @@ async def weather(ctx):
     forcast.add_field(name="Wind: ", value=data["Wind"], inline=True)
 
     forcast.set_footer(text="Message @Bertle#9579 if you have any questions")
-    ctx.send(embed = forcast)
+    await ctx.send(embed = forcast)
 
 
 
