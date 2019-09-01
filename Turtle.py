@@ -53,7 +53,7 @@ async def update(ctx):
 
 
 #this uploads turtle to github if enabled.
-#@bot.command()
+@bot.command()
 async def upload(ctx):
     if check_perms(ctx):
         os.system(("cd "+ cwd))
@@ -320,7 +320,7 @@ async def on_message(message):
     elif message.author == bot.user:
         print("Something else.")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
-        if (message.connect):
+        
 
 
     await bot.process_commands(message)
