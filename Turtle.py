@@ -67,19 +67,29 @@ async def upload(ctx):
 @bot.command()
 async def ipadress(ctx):
     if await check_perms(ctx):
-        import socket    
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            # doesn't even have to be reachable
-            s.connect(('10.255.255.255', 1))
-            IPAddr = s.getsockname()[0]
-        except:
-            IPAddr = '127.0.0.1' #fails
-        finally:
-            s.close()
-        #return IP
-        #hostname = socket.gethostname()    
-        IPAddr = socket.gethostbyname(socket.getfqdn())  
+
+        if os.name != "nt":
+            import fcntl
+            import struct
+            def get_interface_ip(ifname):
+                s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                return socket.inet_ntoa(fcntl.ioctl(
+                        s.fileno(),
+                        0x8915,  # SIOCGIFADDR
+                        struct.pack('256s', bytes(ifname[:15], 'utf-8'))
+                        # Python 2.7: remove the second argument for the bytes call
+                    )[20:24])
+
+        import socket
+        IPAddr = socket.gethostbyname(socket.gethostname())
+        if IPAddr.startswith("127.") and os.name != "nt":
+            interfaces = ["eth0","eth1","eth2","wlan0","wlan1","wifi0","ath0","ath1","ppp0"]
+            for ifname in interfaces:
+                try:
+                    IPAddr = get_interface_ip(ifname)
+                    break
+                except IOError:
+                    pass    
         await ctx.send(IPAddr)
 
 
