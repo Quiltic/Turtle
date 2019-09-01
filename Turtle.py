@@ -86,7 +86,7 @@ def getText(file):
         return lines.strip()
 
 
-def check_perms(ctx):
+async def check_perms(ctx):
     print("Checking")
     user = ctx.author.id
     print(get_bertle(),user)
@@ -94,7 +94,7 @@ def check_perms(ctx):
     if get_bertle() == user:
         return(True)
     else:
-        ctx.send("Sorry, but you dont have acsess to that.")
+        await ctx.send("Sorry, but you dont have acsess to that.")
         return(False)
         #raise TurtleException('invalid permissions to update',
         #                     'You don\'t got permission to do that, pardner.')
