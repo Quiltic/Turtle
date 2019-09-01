@@ -104,7 +104,7 @@ async def check_perms(ctx):
 
 
 def get_bertle():
-    return bot.get_user(bot.owner_id)
+    return (275002179763306517)#bot.get_user(bot.owner_id)
 
 
 
