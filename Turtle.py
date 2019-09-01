@@ -1,6 +1,8 @@
 import asyncio, subprocess
 import time, random, os, sys
 
+from wether import *
+
 try:
     import discord
     from discord.ext import commands
@@ -142,6 +144,26 @@ def delete_file(file, guild):
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 @bot.command()
+async def weather(ctx):
+    data = advanced_weather()
+    msg = "Currently: " + data["Description"]
+    timestuff = "Around: "+ data["Time"]
+    weatherEmbed=discord.Embed(title=timestuff, description=msg, color=0x1c57e3)
+    weatherEmbed.set_author(name="Turtle's Forecast", icon_url="Tertle.png") # Change the icon back to shigure
+    weatherEmbed.set_thumbnail(url="Tertle.png")
+    weatherEmbed.add_field(name="Current Tempterture (F):", value=data["Temp"], inline=True)
+    weatherEmbed.add_field(name="Feels like Tempterture (F):", value=data["Feels"], inline=True)
+    weatherEmbed.add_field(name="Humidity: ", value=data["Humidity"], inline=True)
+
+    weatherEmbed.add_field(name="Rain chance in %:", value=data["Rain"], inline=False)
+    weatherEmbed.add_field(name="Wind: ", value=data["Wind"], inline=True)
+
+    weatherEmbed.set_footer(text="Message @Bertle#9579 if you have any questions")
+    ctx.send(weatherEmbed)
+
+
+
+@bot.command()
 async def turtle(ctx):
     """Makes me react with 🐢"""
     await ctx.message.add_reaction("🐢")
@@ -277,7 +299,7 @@ async def conversate(message):
         for a in range(rand):
             msg = msg + "🐢"
         await sendmsgorig(message, msg)
-        msg = "I was able to get " + rand + " Turtles for the cause!"
+        msg = "I was able to get " + str(rand) + " Turtles for the cause!"
         await sendmsgorig(message, msg)
 
     elif "yell at " in message.content.lower():
