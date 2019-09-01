@@ -87,8 +87,9 @@ def getText(file):
 
 
 def check_perms(ctx):
+    print("Checking")
     user = ctx.author.id
-
+    print(get_bertle(),user)
     #if action is 'update':
     if get_bertle() == user:
         return(True)
