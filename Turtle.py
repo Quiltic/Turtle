@@ -148,18 +148,18 @@ async def weather(ctx):
     data = advanced_weather()
     msg = "Currently: " + data["Description"]
     timestuff = "Around: "+ data["Time"]
-    weatherEmbed=discord.Embed(title=timestuff, description=msg, color=0x1c57e3)
-    weatherEmbed.set_author(name="Turtle's Forecast") #icon_url="Tertle.png" 
-    #weatherEmbed.set_thumbnail(url="Tertle.png")
-    weatherEmbed.add_field(name="Current Tempterture (F):", value=data["Temp"], inline=True)
-    weatherEmbed.add_field(name="Feels like Tempterture (F):", value=data["Feels"], inline=True)
-    weatherEmbed.add_field(name="Humidity: ", value=data["Humidity"], inline=True)
+    forcast=discord.Embed(title=timestuff, description=msg, color=0x1c57e3)
+    forcast.set_author(name="Turtle's Forecast") #icon_url="Tertle.png" 
+    #forcast.set_thumbnail(url="Tertle.png")
+    forcast.add_field(name="Current Tempterture (F):", value=data["Temp"], inline=True)
+    forcast.add_field(name="Feels like Tempterture (F):", value=data["Feels"], inline=True)
+    forcast.add_field(name="Humidity: ", value=data["Humidity"], inline=True)
 
-    weatherEmbed.add_field(name="Rain chance in %:", value=data["Rain"], inline=False)
-    weatherEmbed.add_field(name="Wind: ", value=data["Wind"], inline=True)
+    forcast.add_field(name="Rain chance in %:", value=data["Rain"], inline=False)
+    forcast.add_field(name="Wind: ", value=data["Wind"], inline=True)
 
-    weatherEmbed.set_footer(text="Message @Bertle#9579 if you have any questions")
-    ctx.send(weatherEmbed)
+    forcast.set_footer(text="Message @Bertle#9579 if you have any questions")
+    ctx.send(embed = forcast)
 
 
 
