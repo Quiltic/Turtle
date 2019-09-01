@@ -68,9 +68,8 @@ async def upload(ctx):
 async def ipadress(ctx):
     if await check_perms(ctx):
         import socket    
-        hostname = socket.gethostname()    
-        IPAddr = socket.gethostbyname(hostname)  
-        
+        #hostname = socket.gethostname()    
+        IPAddr = socket.gethostbyname(socket.getfqdn())  
         await ctx.send(IPAddr)
 
 
