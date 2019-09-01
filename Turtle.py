@@ -23,6 +23,8 @@ currStatus = discord.Activity(name="turtle sounds. | []help", type=discord.Activ
 #get home directory
 cwd = os.getcwd()
 
+bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
+cur_user = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Admin Commands ###################
@@ -30,6 +32,7 @@ cwd = os.getcwd()
 
 @bot.command()
 async def update(ctx):
+    """This updates Turtle to the latest version of itself from github. BERTLE ONLY"""
     if await check_perms(ctx):
         await sendmsg(ctx,"Updating")
         print("On")
@@ -55,6 +58,7 @@ async def update(ctx):
 #this uploads turtle to github if enabled.
 @bot.command()
 async def upload(ctx):
+    """This uploads the current version of Turtle to github. BERTLE ONLY"""
     if await check_perms(ctx):
         os.system(("cd "+ cwd))
         os.system("git add .")
@@ -66,10 +70,11 @@ async def upload(ctx):
 
 @bot.command()
 async def ipadress(ctx):
+    """This gives the current IP for the PI that it is running on. BERTLE ONLY"""
     if await check_perms(ctx):
-
+        #Yoinked from https://stackoverflow.com/questions/166506/finding-local-ip-addresses-using-pythons-stdlib/24564613#24564613
         if os.name != "nt":
-            import fcntl
+            import fcntl #this only works on luinex dont know why
             import struct
             def get_interface_ip(ifname):
                 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -90,6 +95,7 @@ async def ipadress(ctx):
                     break
                 except IOError:
                     pass    
+
         await ctx.send(IPAddr)
 
 
@@ -108,22 +114,19 @@ def getText(file):
 async def check_perms(ctx):
     print("Checking")
     user = ctx.author.id
-    bertle = get_bertle() 
-    print(bertle,user)
-    #if action is 'update':
+    print(bertle,user) #see id of user vs my id
     if bertle == user:
         return(True)
     else:
+        print("Cant give acsess to user: %s" % (ctx.author))
         await ctx.send("Sorry, but you dont have access to that.")
         return(False)
+
         #raise TurtleException('invalid permissions to update',
         #                     'You don\'t got permission to do that, pardner.')
     #else:
     #    raise NotImplementedError()
 
-
-def get_bertle():
-    return (275002179763306517)#bot.get_user(bot.owner_id)
 
 
 
@@ -138,12 +141,47 @@ def delete_file(file, guild):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+@bot.command
+async def turtle(ctx):
+    """Makes me react with 🐢"""
+    await ctx.content.add_reaction("🐢")
+
 @bot.command()
 async def r(ctx, *args):
+    """This rolls a # of dice and gives the output. Usage: []r 1d4 +4"""
     stuff = await dice(ctx, *args)
     await sendmsg(ctx,stuff)
 
+@bot.command()
+async def Yell(ctx):
+    """Turtle just Yells at you"""
+    await sendmsg(ctx,"AGGGG")
 
+@bot.command()
+async def GitURL(ctx):
+    """This gives the git repository on github."""
+    await ctx.send("My repository is: https://github.com/Quiltic/Turtle.git")
+
+
+
+
+
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###################### Basic Commands ###################
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+#this is to send complex messages and its from old turtle
+async def sendmsg(ctx,msg):
+    await ctx.send(msg)
+
+#random number
+def randomnum(low,high):
+    return random.randrange(low,high+1)
+
+
+#rolls dice
 async def dice(ctx, *args):
     addon = '0'
     #await sendmsg(ctx, randomnum(1,20))
@@ -199,20 +237,60 @@ async def dice(ctx, *args):
     
     return(msg)
 
-@bot.command()
-async def Yell(ctx):
-    await sendmsg(ctx,"AGGGG")
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-###################### Basic Commands ###################
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-#this is broken?
-async def sendmsg(ctx,msg):
-    await ctx.send(msg)
 
-def randomnum(low,high):
-    return random.randrange(low,high+1)
 
+
+
+#this is from old turtle but i still love it
+async def conversate(message):
+    global cur_user
+    
+    if "make me a sandwich" in message.content.lower(): # simple ping
+        await sendmsg(message, "Here you go!")
+        await message.channel.send(file=discord.File('Sandwich.jpg'))
+
+    elif "bubble" in message.content.lower(): # simple ping
+        await sendmsg(message, "BUBBLES!")
+
+    elif "random" == message.content.lower():
+        await sendmsg(message, "RANDOM NUMBERS YOU SAY!?")
+        for a in range(randomnum(2,24)):
+            await sendmsg(message,randomnum(10,10000))
+        await sendmsg(message, "Fin.")
+
+    elif "what time is it" in message.content.lower():
+        await sendmsg(message, "TURTLE TIME!")
+        msg = "🐢"
+        for a in range(randomnum(2,24)):
+            msg = msg + "🐢"
+        await sendmsg(message, msg)
+
+    elif "i need an army" in message.content.lower():
+        await sendmsg(message, "On it boss!")
+        msg = "🐢"
+        for a in range(randomnum(100,200)):
+            msg = msg + "🐢"
+        await sendmsg(message, msg)
+
+    elif "yell at " in message.content.lower():
+        msg = ("They arnt here, sorry %s." % (message.author.name))
+        for users in bot.users:
+            for b in message.guild.members:
+                if b == users:
+                    if message.content.lower()[8:] in users.name.lower():
+                        msg = "Hey <@%s>! %s wants you." % (users.id,message.author.name)
+        await sendmsg(message, msg)
+
+    elif "help" in message.content.lower():
+        await sendmsg(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness...")
+        await sendmsg(message, "Helpful?")
+    elif "hi" in message.content.lower(): # simple ping
+        await sendmsg(message, "Hello!")
+    else:# simple ping
+        await sendmsg(message, "Ok then!") 
+    
+    cur_user = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Sound Commands ###################
@@ -250,13 +328,15 @@ def get_existing_voice_client(guild):
 #Join the voice channel
 @bot.command()
 async def join(ctx):
+    """Joins me to the users call/channel."""
     _ = await connect_to_user(ctx)
 
 #leave the voice channel
 @bot.command()
 async def leave(ctx):
+    """Makes me leave the call/channel."""
     if ctx.voice_client and ctx.voice_client.is_connected():
-        loc = os.path.join('resources', 'soundclips', 'leave')
+        #loc = os.path.join('resources', 'soundclips', 'leave')
         #sounds = make_sounds_dict(loc)
         #soundname = random.choice(list(sounds.values()))
         #sound = os.path.join(loc, soundname)
@@ -266,20 +346,21 @@ async def leave(ctx):
 
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-######################  This and Main Stuff was taken from Ben Rucker ######################
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+######################  This and Main Stuff was taken from Ben Rucker it has been modifyed ######################
                          https://github.com/benrucker
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 #Turn off
 @bot.command()
 async def perish(ctx):
+    """Force turns me off. BERTLE ONLY"""
     if await check_perms(ctx):
         await sendmsg(ctx,"Im off now.")
         print("Bye!")
         await bot.close()
 
-#Turn off for the bot
+#Turn off for the bot to use when updating
 async def turnoff(ctx):
     await sendmsg(ctx,"Restarting?")
     print("Bye!")
@@ -335,14 +416,29 @@ class TurtleException(Exception):
 
 @bot.event
 async def on_message(message):
+    global cur_user
 
     if message.content.startswith(prefix):
         print("Command!")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
+
+    elif message.author == cur_user:
+        await conversate(message)
+
+    elif ("hey turtle" in message.content.lower()):
+        message.send("What?!")
+        cur_user = message.author
+        print(cur_user)
+
+    elif "thanks turtle" in message.content.lower(): 
+        if message.author.id == bertle:
+            await sendmsg(message, "No problem Boss!")
+        else:
+            await sendmsg(message, "Your welcome!")
+
     elif message.author == bot.user:
         print("Something else.")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
-        
 
 
     await bot.process_commands(message)
