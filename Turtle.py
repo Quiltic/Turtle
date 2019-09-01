@@ -68,6 +68,16 @@ async def upload(ctx):
 async def ipadress(ctx):
     if await check_perms(ctx):
         import socket    
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            # doesn't even have to be reachable
+            s.connect(('10.255.255.255', 1))
+            IPAddr = s.getsockname()[0]
+        except:
+            IPAddr = '127.0.0.1' #fails
+        finally:
+            s.close()
+        #return IP
         #hostname = socket.gethostname()    
         IPAddr = socket.gethostbyname(socket.getfqdn())  
         await ctx.send(IPAddr)
