@@ -443,6 +443,10 @@ async def on_message(message):
         else:
             await sendmsgorig(message, "Your welcome!")
 
+    elif "please" in message.content.lower(): 
+        if message.author.id == bertle:
+            await sendmsgorig(message, "PRETTY PLEASE!")
+
     elif message.author == bot.user:
         print("Im talking:")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
