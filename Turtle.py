@@ -426,7 +426,7 @@ async def on_message(message):
         await conversate(message)
 
     elif ("hey turtle" in message.content.lower()):
-        message.send("What?!")
+        await sendmsg(message,"What?!")
         cur_user = message.author
         print(cur_user)
 
@@ -439,8 +439,8 @@ async def on_message(message):
     elif message.author == bot.user:
         print("Im talking:")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
-    else:
-        print(message.content)
+    #else:
+    #   print(message.content)
 
 
     await bot.process_commands(message)
