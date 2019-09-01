@@ -255,9 +255,10 @@ async def leave(ctx):
 #Turn off
 @bot.command()
 async def perish(ctx):
-    await sendmsg(ctx,"Im off now.")
-    print("Bye!")
-    await bot.close()
+    if await check_perms(ctx):
+        await sendmsg(ctx,"Im off now.")
+        print("Bye!")
+        await bot.close()
 
 #Turn off for the bot
 async def turnoff(ctx):
