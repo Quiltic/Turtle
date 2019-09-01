@@ -141,10 +141,10 @@ def delete_file(file, guild):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-@bot.command
+@bot.command()
 async def turtle(ctx):
     """Makes me react with 🐢"""
-    await ctx.content.add_reaction("🐢")
+    await ctx.message.add_reaction("🐢")
 
 @bot.command()
 async def r(ctx, *args):
@@ -175,6 +175,10 @@ async def GitURL(ctx):
 #this is to send complex messages and its from old turtle
 async def sendmsg(ctx,msg):
     await ctx.send(msg)
+
+#this is for old commands that dont work without it from message event
+async def sendmsgorig(message,msg):
+    await message.channel.send(msg)
 
 #random number
 def randomnum(low,high):
@@ -247,31 +251,34 @@ async def conversate(message):
     global cur_user
 
     if "make me a sandwich" in message.content.lower(): # simple ping
-        await sendmsg(message, "Here you go!")
+        await sendmsgorig(message, "Here you go!")
         await message.channel.send(file=discord.File('Sandwich.jpg'))
 
     elif "bubble" in message.content.lower(): # simple ping
-        await sendmsg(message, "BUBBLES!")
+        await sendmsgorig(message, "BUBBLES!")
 
     elif "random" == message.content.lower():
-        await sendmsg(message, "RANDOM NUMBERS YOU SAY!?")
+        await sendmsgorig(message, "RANDOM NUMBERS YOU SAY!?")
         for a in range(randomnum(2,24)):
-            await sendmsg(message,randomnum(10,10000))
-        await sendmsg(message, "Fin.")
+            await sendmsgorig(message,randomnum(10,10000))
+        await sendmsgorig(message, "Fin.")
 
     elif "what time is it" in message.content.lower():
-        await sendmsg(message, "TURTLE TIME!")
+        await sendmsgorig(message, "TURTLE TIME!")
         msg = "🐢"
         for a in range(randomnum(2,24)):
             msg = msg + "🐢"
-        await sendmsg(message, msg)
+        await sendmsgorig(message, msg)
 
     elif "i need an army" in message.content.lower():
-        await sendmsg(message, "On it boss!")
+        await sendmsgorig(message, "On it boss!")
         msg = "🐢"
-        for a in range(randomnum(100,200)):
+        rand = randomnum(100,200)
+        for a in range(rand):
             msg = msg + "🐢"
-        await sendmsg(message, msg)
+        await sendmsgorig(message, msg)
+        msg = "I was able to get " + rand + " Turtles for the cause!"
+        await sendmsgorig(message, msg)
 
     elif "yell at " in message.content.lower():
         msg = ("They arnt here, sorry %s." % (message.author.name))
@@ -280,15 +287,15 @@ async def conversate(message):
                 if b == users:
                     if message.content.lower()[8:] in users.name.lower():
                         msg = "Hey <@%s>! %s wants you." % (users.id,message.author.name)
-        await sendmsg(message, msg)
+        await sendmsgorig(message, msg)
 
     elif "help" in message.content.lower():
-        await sendmsg(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness...")
-        await sendmsg(message, "Helpful?")
+        await sendmsgorig(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness..., help rase an army, get the time")
+        await sendmsgorig(message, "Helpful?")
     elif "hi" in message.content.lower(): # simple ping
-        await sendmsg(message, "Hello!")
+        await sendmsgorig(message, "Hello!")
     else:# simple ping
-        await sendmsg(message, "Ok then!") 
+        await sendmsgorig(message, "Ok then!") 
     
     cur_user = 0
 
@@ -426,15 +433,15 @@ async def on_message(message):
         await conversate(message)
 
     elif ("hey turtle" in message.content.lower()):
-        await sendmsg(message,"What?!")
+        await sendmsgorig(message,"What?!")
         cur_user = message.author
         print(cur_user)
 
     elif "thanks turtle" in message.content.lower(): 
         if message.author.id == bertle:
-            await sendmsg(message, "No problem Boss!")
+            await sendmsgorig(message, "No problem Boss!")
         else:
-            await sendmsg(message, "Your welcome!")
+            await sendmsgorig(message, "Your welcome!")
 
     elif message.author == bot.user:
         print("Im talking:")
