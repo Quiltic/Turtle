@@ -144,7 +144,17 @@ def delete_file(file, guild):
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 @bot.command()
+async def timmer(ctx, delay = 5):
+    """Makes me set a timemer for # then 🐢"""
+    await ctx.send(("Counting down from: %s" % (delay)))
+    await asyncio.sleep(delay)
+    await ctx.send("Times up!")
+    await ctx.message.add_reaction("🐢")
+
+
+@bot.command()
 async def weather(ctx):
+    await ctx.message.add_reaction("🐢")
     data = advanced_weather()
     msg = "Currently: " + data["Description"]
     timestuff = "Around: "+ data["Time"]
@@ -155,10 +165,8 @@ async def weather(ctx):
     forcast.add_field(name="Feels like Tempterture (F):", value=data["Feels"], inline=True)
     forcast.add_field(name="Humidity: ", value=data["Humidity"], inline=True)
 
-    forcast.add_field(name="Rain chance in %:", value=data["Rain"], inline=False)
+    forcast.add_field(name="Rain chance in %:", value=data["Rain"], inline=True)
     forcast.add_field(name="Wind: ", value=data["Wind"], inline=True)
-
-    forcast.set_footer(text="Message @Bertle#9579 if you have any questions")
     await ctx.send(embed = forcast)
 
 
