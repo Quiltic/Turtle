@@ -31,6 +31,13 @@ cur_user = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Admin Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+@bot.command()
+async def showTerminal(ctx):
+    pipe = subprocess.Popen("pwd", shell=True, stdout=subprocess.PIPE).stdout
+    output = pipe.read()
+    ctx.send(output)
+    print(output)
+
 
 @bot.command()
 async def update(ctx):
