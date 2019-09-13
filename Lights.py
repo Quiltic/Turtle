@@ -35,6 +35,7 @@ async def connect_lights(red = 0, green = 0, blue = 0):
 
     #red
     color = "pigs p 17 " + red
+    print(color)
     os.system(color)
     #pi.set_PWM_dutycycle(17, red)
     print("red set")
