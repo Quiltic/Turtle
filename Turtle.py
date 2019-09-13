@@ -32,9 +32,14 @@ cur_user = 0
 ###################### Custom Admin Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 @bot.command()
-async def showTerminal(ctx, cmd):
+async def showTerminal(ctx, *args):
+    cmd = []
+    for a in args:
+        cmd.append(a)
+    print(cmd)
+
     if await check_perms(ctx):
-        output = subprocess.Popen( cmd, stdout=subprocess.PIPE ).communicate()
+        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
         #output = pipe.read()
         for out in output:
             await ctx.send(out)
