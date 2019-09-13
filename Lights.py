@@ -34,7 +34,7 @@ async def connect_lights(red = 0, green = 0, blue = 0):
     #os.system("sudo pigpiod")
 
     #red
-    color = "pigs p 17 " + red
+    color = "pigs p 17 " + str(red)
     print(color)
     os.system(color)
     #pi.set_PWM_dutycycle(17, red)
@@ -42,12 +42,16 @@ async def connect_lights(red = 0, green = 0, blue = 0):
     
 
     #green
-    #color = "pigs p 22 " + green
-    pi.set_PWM_dutycycle(22, green)
+    color = "pigs p 22 " + str(green)
+    print(color)
+    os.system(color)
+    #pi.set_PWM_dutycycle(22, green)
     
     #Blue
-    #color = "pigs p 24 " + blue
-    pi.set_PWM_dutycycle(24, blue)
+    color = "pigs p 24 " + str(blue)
+    print(color)
+    os.system(color)
+    #pi.set_PWM_dutycycle(24, blue)
 
 '''
 
