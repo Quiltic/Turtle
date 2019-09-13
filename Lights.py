@@ -1,5 +1,5 @@
 if __name__ == "__main__":
-    import os
+    import os, subprocess
     import discord
     from discord.ext import commands
     prefix = '[]'
@@ -35,8 +35,9 @@ async def connect_lights(red = 0, green = 0, blue = 0):
 
     #red
     color = "pigs p 17 " + str(red)
+    color = ['pigs', 'p', '17', str(red)]
     print(color)
-    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    output = subprocess.Popen(color, stdout=subprocess.PIPE ).communicate()
     for out in output:
         await ctx.send(out)
     #os.system(color)
