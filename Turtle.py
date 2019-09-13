@@ -43,9 +43,8 @@ async def showTerminal(ctx, *args):
         #output = pipe.read()
         words = "```"
         for out in output:
-            out = out.split("\n")
-            for ou in out:
-                words = words + ou + "\n"
+            #out = out.split("\n")
+            words = words + out
             
         words = words + "```"
         await ctx.send(words)
