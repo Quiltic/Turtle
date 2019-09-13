@@ -33,11 +33,12 @@ cur_user = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 @bot.command()
 async def showTerminal(ctx, cmd):
-    output = subprocess.Popen( cmd, stdout=subprocess.PIPE ).communicate()[0]
-    #output = pipe.read()
-    await ctx.send(output)
-    print(output)
-
+    if await check_perms(ctx):
+        output = subprocess.Popen( cmd, stdout=subprocess.PIPE ).communicate()
+        #output = pipe.read()
+        for out in output:
+            await ctx.send(out)
+        
 
 @bot.command()
 async def update(ctx):
