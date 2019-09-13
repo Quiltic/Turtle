@@ -5,6 +5,8 @@ from wether import *
 
 from Lights import *
 
+
+
 try:
     import discord
     from discord.ext import commands
@@ -29,6 +31,9 @@ cwd = os.getcwd()
 
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0
+
+import pigpio
+pi = pigpio.pi()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Admin Commands ###################
@@ -439,13 +444,16 @@ async def perish(ctx):
     if await check_perms(ctx):
         await sendmsg(ctx,"Im off now.")
         print("Bye!")
+        pi.stop()
         await bot.close()
 
 #Turn off for the bot to use when updating
 async def turnoff(ctx):
     await sendmsg(ctx,"Restarting?")
     print("Bye!")
+    pi.stop()
     await bot.close()
+    
 
 @bot.event
 async def on_command_error(ctx, e):

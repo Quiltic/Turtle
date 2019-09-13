@@ -4,6 +4,8 @@ if __name__ == "__main__":
     from discord.ext import commands
     prefix = '[]'
     bot = commands.Bot(prefix)
+    import pigpio
+    pi = pigpio.pi()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Light Commands ###################
@@ -97,19 +99,24 @@ async def light_wampin():
 
 async def connect_lights(red = 0, green = 0, blue = 0):
     """Eventualy will do all the lights stuff witht the IO of the pi"""
+    print("working")
+    
+    
     #Turn on the lightpins (will work even if this fails)
     #os.system("sudo pigpiod")
 
     #red
-    color = "pigs p 17 " + red
-    os.system(color)
+    #color = "pigs p 17 " + red
+    pi.set_PWM_dutycycle(17, red)
+    print("red set")
+    
 
     #green
-    color = "pigs p 22 " + green
-    os.system(color)
+    #color = "pigs p 22 " + green
+    pi.set_PWM_dutycycle(22, green)
     
     #Blue
-    color = "pigs p 24 " + blue
-    os.system(color)
-
+    #color = "pigs p 24 " + blue
+    pi.set_PWM_dutycycle(24, blue)
+    
 
