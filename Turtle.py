@@ -180,6 +180,38 @@ async def setcolor(ctx, red = 255, green = 255, blue = 255):
 
 
 
+async def light_perms(ctx):
+    for role in ctx.author.roles:
+        if role.name == "Light Wizard":
+            #await ctx.send("Glowy!")
+            return(True)
+    await ctx.send("You dont know magic!")
+    return(False)
+
+async def connect_lights(red = 0, green = 0, blue = 0):
+    """Eventualy will do all the lights stuff witht the IO of the pi"""
+    print("working")
+    
+    
+    #Turn on the lightpins (will work even if this fails)
+    #os.system("sudo pigpiod")
+
+    #red
+    #color = "pigs p 17 " + red
+    pi.set_PWM_dutycycle(17, red)
+    print("red set")
+    
+
+    #green
+    #color = "pigs p 22 " + green
+    pi.set_PWM_dutycycle(22, green)
+    
+    #Blue
+    #color = "pigs p 24 " + blue
+    pi.set_PWM_dutycycle(24, blue)
+
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Commands ###################
