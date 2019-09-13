@@ -1,5 +1,9 @@
 if __name__ == "__main__":
     import os
+    import discord
+    from discord.ext import commands
+    prefix = '[]'
+    bot = commands.Bot(prefix)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Light Commands ###################
