@@ -27,15 +27,16 @@ async def light_perms(ctx):
 
 async def connect_lights(red = 0, green = 0, blue = 0):
     """Eventualy will do all the lights stuff witht the IO of the pi"""
-    print("working")
+    print("colors")
     
     
     #Turn on the lightpins (will work even if this fails)
     #os.system("sudo pigpiod")
 
     #red
-    #color = "pigs p 17 " + red
-    pi.set_PWM_dutycycle(17, red)
+    color = "pigs p 17 " + red
+    os.system(color)
+    #pi.set_PWM_dutycycle(17, red)
     print("red set")
     
 
