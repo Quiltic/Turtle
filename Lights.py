@@ -36,7 +36,10 @@ async def connect_lights(red = 0, green = 0, blue = 0):
     #red
     color = "pigs p 17 " + str(red)
     print(color)
-    os.system(color)
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    for out in output:
+        await ctx.send(out)
+    #os.system(color)
     #pi.set_PWM_dutycycle(17, red)
     print("red set")
     
