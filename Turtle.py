@@ -42,8 +42,8 @@ async def showTerminal(ctx, *args):
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
         #output = pipe.read()
         for out in output:
-            words = "```" + out + "```"
-            await ctx.send(words)
+            #words = "```" + out + "```"
+            await ctx.send(out)
         
 
 @bot.command()

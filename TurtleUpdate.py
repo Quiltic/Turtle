@@ -13,11 +13,11 @@ os.system("git pull https://github.com/Quiltic/Turtle.git")
 print("cloned")
 
 #give it a moment or 12 then go home
-time.sleep(3)
+#time.sleep(3)
 os.system(("cd "+ cwd))
 
 #reopen turtle
-time.sleep(10)
+#time.sleep(10)
 callfreind = "python3 " + cwd + "/Turtle.py &"
 os.system("ls")
 print(callfreind)
