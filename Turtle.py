@@ -170,6 +170,7 @@ def delete_file(file, guild):
 @bot.command()
 async def setcolor(ctx, red = 255, green = 255, blue = 255):
     """Changes the color to be ____."""
+    print("check")
     if await light_perms(ctx):
         print("started")
         msg = "Color is now  %s, %s, %s." % (red,green,blue)
