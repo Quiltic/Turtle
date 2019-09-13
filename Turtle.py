@@ -41,13 +41,15 @@ async def showTerminal(ctx, *args):
     if await check_perms(ctx):
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
         #output = pipe.read()
-        words = "```"
+        #words = "```"
         for out in output:
             #out = out.split("\n")
-            words = words + out
+            words = "```" + out + "```"
+            await ctx.send(words)
+            #words = words + out
             
-        words = words + "```"
-        await ctx.send(words)
+        #words = words + "```"
+        #await ctx.send(words)
         
 
 @bot.command()
