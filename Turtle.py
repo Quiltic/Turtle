@@ -157,8 +157,35 @@ def delete_file(file, guild):
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+###################### Light Commands ###################
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+@bot.command()
+async def setcolor(ctx, red = 255, green = 255, blue = 255):
+    """Changes the color to be ____."""
+    if light_perms(ctx):
+        msg = "Color is now  %s, %s, %s." % (red,green,blue)
+        await connect_lights(red,green,blue)
+
+        await ctx.send(msg)
+
+
+
+
+@bot.command()
+async def color(ctx):
+    """States the color curently being used."""
+    #color = Lights["Color"]
+    msg = "Color is currently %s." % (color)
+    await ctx.send(msg)
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
 @bot.command()
 async def timmer(ctx, delay = 5):
     """Makes me set a timemer for # then 🐢"""
