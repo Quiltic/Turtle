@@ -17,8 +17,10 @@ Lights = {"Color": [255,255,255], "On?": False, "Delay": 60}
 async def light_perms(ctx):
     print("working")
     for role in ctx.author.roles:
+        print(role)
         if role.name == "Light Wizard":
             #await ctx.send("Glowy!")
+            print("Aproved")
             return(True)
     await ctx.send("You dont know magic!")
     return(False)
