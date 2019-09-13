@@ -3,6 +3,8 @@ import time, random, os, sys
 
 from wether import *
 
+from Lights import *
+
 try:
     import discord
     from discord.ext import commands
@@ -448,6 +450,11 @@ async def on_ready():
     #print(f'Logged into {str(len(guilds))} guilds:')
     #for guild in list(guilds.values()):
     #    print(f'\t{guild.name}:{guild.id}')
+
+
+    #Turn on the lightpins
+    os.system("sudo pigpiod")
+
     print("Let's Do This!")
 
 
