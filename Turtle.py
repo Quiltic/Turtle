@@ -32,9 +32,10 @@ cwd = os.getcwd()
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0
 cur_color_user = 0
+cur_color = [0,0,0]
 
-import pigpio
-pi = pigpio.pi()
+#import pigpio #requires Pigpio which I found from here :https://dordnung.de/raspberrypi-ledstrip/
+#pi = pigpio.pi()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Admin Commands ###################
@@ -168,20 +169,23 @@ def delete_file(file, guild):
 
 @bot.command()
 async def light(ctx, brightness = 100):
-    global cur_color_user
+    global cur_color_user, cur_color
     brightness = brightness/100
     if await light_perms(ctx):
-        if (ctx.author.id == bertle):
+        if ((ctx.author.id == cur_color_user) and (brightness == 1)):
+            await connect_lights(ctx, int(0), int(0), int(0))
+            cur_color_user = 0
+            cur_color = [0,0,0]
+        elif (ctx.author.id == bertle):
             await connect_lights(ctx, int(255*brightness), int(255*brightness), int(160*brightness))
             cur_color_user = ctx.author.id
+            cur_color = [255,255,160]
 
         elif (ctx.author.id == 73486425349165056):
             await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))
             cur_color_user = ctx.author.id
+            cur_color = [255,130,10]
 
-        elif (ctx.author.id == cur_color_user):
-            await connect_lights(ctx, int(0), int(0), int(0))
-            cur_color_user = 0
 
         else:
             await ctx.send(ctx.author.id)
@@ -191,6 +195,7 @@ async def light(ctx, brightness = 100):
 
 @bot.command()
 async def setcolor(ctx, red = 0, green = 0, blue = 0):
+    global cur_color, cur_color_user
     """Changes the color to be ____."""
     print("check")
     if await light_perms(ctx):
@@ -200,24 +205,38 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
         await connect_lights(ctx,red,green,blue)
         await ctx.send(msg)
         cur_color_user = ctx.author.id
+        cur_color = [red,green,blue]
 
 
+@bot.command()
+async def brightness(ctx, bright = 100):
+    """Changes the brightness of the current color without changing the base color"""
+    global cur_color
+    if light_perms(ctx):
+        top = 255-max(cur_color)#makes it into the highest values for the type of light basicly seting its brightness to 100%
+        for a in cur_color:
+            a += top
 
+        bright = bright/100
+        await connect_lights(ctx, int(cur_color[0]*brightness), int(cur_color[1]*brightness), int(cur_color[2]*brightness))    
+        await ctx.send("Brightness changed.")
+    
 
+#anoyingly only works in this file, and cant be moved into another file.
 async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
-    """Eventualy will do all the lights stuff witht the IO of the pi"""
+    """Does all the lights stuff with the IO of the pi"""
     print("colors")
     #Red
     cmd = ["pigs", "p" ,"17", str(red)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     await ctx.send("Redchange")
-    await asyncio.sleep(.06)
+    await asyncio.sleep(.01)
         
     #green
     cmd = ["pigs", "p" ,"22", str(green)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     await ctx.send("Greenchange")
-    await asyncio.sleep(.06)
+    await asyncio.sleep(.01)
         
     #blue
     cmd = ["pigs", "p" ,"24", str(blue)]
