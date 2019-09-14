@@ -197,7 +197,7 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
         print("started")
         
         msg = "Color set to %s, %s, %s." % (red,green,blue)
-        await connect_lights(red,green,blue)
+        await connect_lights(ctx,red,green,blue)
         await ctx.send(msg)
         cur_color_user = ctx.author.id
 
@@ -211,13 +211,13 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     cmd = ["pigs", "p" ,"17", str(red)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     await ctx.send("Redchange")
-    await asyncio.sleep(.08)
+    await asyncio.sleep(.06)
         
     #green
     cmd = ["pigs", "p" ,"22", str(green)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     await ctx.send("Greenchange")
-    await asyncio.sleep(.08)
+    await asyncio.sleep(.06)
         
     #blue
     cmd = ["pigs", "p" ,"24", str(blue)]
