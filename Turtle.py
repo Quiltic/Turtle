@@ -179,13 +179,13 @@ async def setcolor(ctx, red = 255, green = 255, blue = 255):
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
         #for out in output:
         await ctx.send("Redchange")
-        await asyncio.sleep(1)
+        await asyncio.sleep(.5)
         
         #green
         cmd = ["pigs", "p" ,"22", str(green)]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
         await ctx.send("Greenchange")
-        await asyncio.sleep(1)
+        await asyncio.sleep(.5)
         #for out in output:
         #    await ctx.send(out)
         
