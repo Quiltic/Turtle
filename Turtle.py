@@ -167,6 +167,7 @@ def delete_file(file, guild):
 
 @bot.command()
 async def light(ctx, brightness = 100):
+    brightness = brightness/100
     if await light_perms(ctx):
         if (ctx.author.id == bertle):
             await connect_lights(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
