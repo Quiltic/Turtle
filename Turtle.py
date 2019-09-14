@@ -174,15 +174,25 @@ async def setcolor(ctx, red = 255, green = 255, blue = 255):
     if await light_perms(ctx):
         print("started")
         
-        """
-        cmd = ["pigs", "p" ,"17", "0"]
+        #Red
+        cmd = ["pigs", "p" ,"17", str(red)]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        #output = pipe.read()
         for out in output:
-            #words = "```" + out + "```"
             await ctx.send(out)
-        #"""
-        await showTerminal(ctx, "pigs", "p" ,"17", "0")
+        
+        #green
+        cmd = ["pigs", "p" ,"22", str(green)]
+        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+        for out in output:
+            await ctx.send(out)
+        
+        #blue
+        cmd = ["pigs", "p" ,"24", str(blue)]
+        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+        for out in output:
+            await ctx.send(out)
+        
+        
 
         msg = "Color is now  %s, %s, %s." % (red,green,blue)
         #await connect_lights(red,green,blue)
