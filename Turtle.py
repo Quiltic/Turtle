@@ -165,10 +165,19 @@ def delete_file(file, guild):
 ###################### Light Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+@bot.command()
+async def light(ctx, brightness = 100):
+    if await light_perms(ctx):
+        if (ctx.author.id == bertle):
+            await setcolor(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
+        else:
+            await ctx.send(ctx.author.id)
+            await ctx.send("Use setcolor instead!")
+
 
 
 @bot.command()
-async def setcolor(ctx, red = 255, green = 255, blue = 255):
+async def setcolor(ctx, red = 0, green = 0, blue = 0):
     """Changes the color to be ____."""
     print("check")
     if await light_perms(ctx):
