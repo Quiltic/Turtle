@@ -183,20 +183,17 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
     if await light_perms(ctx):
         print("started")
         
-            #Red
+        #Red
         cmd = ["pigs", "p" ,"17", str(red)]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        #for out in output:
         await ctx.send("Redchange")
-        await asyncio.sleep(.1)
+        await asyncio.sleep(.05)
             
         #green
         cmd = ["pigs", "p" ,"22", str(green)]
         output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
         await ctx.send("Greenchange")
-        await asyncio.sleep(.1)
-        #for out in output:
-        #    await ctx.send(out)
+        await asyncio.sleep(.05)
             
         #blue
         cmd = ["pigs", "p" ,"24", str(blue)]
@@ -204,12 +201,32 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
         await ctx.send("Bluechange")
         
         msg = "Color is now  %s, %s, %s." % (red,green,blue)
+        
         #await connect_lights(red,green,blue)
         await ctx.send(msg)
 
 
 
 
+async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
+    """Eventualy will do all the lights stuff witht the IO of the pi"""
+    print("colors")
+    #Red
+    cmd = ["pigs", "p" ,"17", str(red)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    await ctx.send("Redchange")
+    await asyncio.sleep(.1)
+        
+    #green
+    cmd = ["pigs", "p" ,"22", str(green)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    await ctx.send("Greenchange")
+    await asyncio.sleep(.1)
+        
+    #blue
+    cmd = ["pigs", "p" ,"24", str(blue)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    await ctx.send("Bluechange")
 
 
 

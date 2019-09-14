@@ -24,9 +24,9 @@ async def light_perms(ctx):
             return(True)
     await ctx.send("You dont know magic!")
     return(False)
-
+"""
 async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
-    """Eventualy will do all the lights stuff witht the IO of the pi"""
+    '''Eventualy will do all the lights stuff witht the IO of the pi'''
     print("colors")
     
     
@@ -53,7 +53,7 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     await ctx.send("Bluechange")
     #for out in output:
     #    await ctx.send(out)
-
+#"""
 '''
 
 #@bot.command()
