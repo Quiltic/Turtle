@@ -169,7 +169,7 @@ def delete_file(file, guild):
 async def light(ctx, brightness = 100):
     if await light_perms(ctx):
         if (ctx.author.id == bertle):
-            await setcolor(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
+            await await connect_lights(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
         else:
             await ctx.send(ctx.author.id)
             await ctx.send("Use setcolor instead!")
@@ -183,30 +183,8 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
     if await light_perms(ctx):
         print("started")
         
-        #Red
-        cmd = ["pigs", "p" ,"17", str(red)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        #for out in output:
-        await ctx.send("Redchange")
-        await asyncio.sleep(.5)
+        await connect_lights(ctx,red,green,blue)
         
-        #green
-        cmd = ["pigs", "p" ,"22", str(green)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        await ctx.send("Greenchange")
-        await asyncio.sleep(.5)
-        #for out in output:
-        #    await ctx.send(out)
-        
-        #blue
-        cmd = ["pigs", "p" ,"24", str(blue)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        await ctx.send("Bluechange")
-        #for out in output:
-        #    await ctx.send(out)
-        
-        
-
         msg = "Color is now  %s, %s, %s." % (red,green,blue)
         #await connect_lights(red,green,blue)
         await ctx.send(msg)

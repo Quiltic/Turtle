@@ -25,37 +25,34 @@ async def light_perms(ctx):
     await ctx.send("You dont know magic!")
     return(False)
 
-async def connect_lights(red = 0, green = 0, blue = 0):
+async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     """Eventualy will do all the lights stuff witht the IO of the pi"""
     print("colors")
     
     
     #Turn on the lightpins (will work even if this fails)
     #os.system("sudo pigpiod")
-
-    #red
-    color = "pigs p 17 " + str(red)
-    color = ['pigs', 'p', '17', str(red)]
-    print(color)
-    output = subprocess.Popen(color, stdout=subprocess.PIPE ).communicate()
-    for out in output:
-        await ctx.send(out)
-    #os.system(color)
-    #pi.set_PWM_dutycycle(17, red)
-    print("red set")
-    
-
+    #Red
+    cmd = ["pigs", "p" ,"17", str(red)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    #for out in output:
+    await ctx.send("Redchange")
+    await asyncio.sleep(.1)
+        
     #green
-    color = "pigs p 22 " + str(green)
-    print(color)
-    os.system(color)
-    #pi.set_PWM_dutycycle(22, green)
-    
-    #Blue
-    color = "pigs p 24 " + str(blue)
-    print(color)
-    os.system(color)
-    #pi.set_PWM_dutycycle(24, blue)
+    cmd = ["pigs", "p" ,"22", str(green)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    await ctx.send("Greenchange")
+    await asyncio.sleep(.1)
+    #for out in output:
+    #    await ctx.send(out)
+        
+    #blue
+    cmd = ["pigs", "p" ,"24", str(blue)]
+    output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+    await ctx.send("Bluechange")
+    #for out in output:
+    #    await ctx.send(out)
 
 '''
 
