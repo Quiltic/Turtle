@@ -171,6 +171,10 @@ async def light(ctx, brightness = 100):
     if await light_perms(ctx):
         if (ctx.author.id == bertle):
             await connect_lights(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
+        
+        elif (ctx.author.id == 73486425349165056):
+            await connect_lights(ctx, int(255/brightness), int(130/brightness), int(10/brightness))
+
         else:
             await ctx.send(ctx.author.id)
             await ctx.send("Use setcolor instead!")
