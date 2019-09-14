@@ -168,6 +168,7 @@ def delete_file(file, guild):
 
 @bot.command()
 async def light(ctx, brightness = 100):
+    global cur_color_user
     brightness = brightness/100
     if await light_perms(ctx):
         if (ctx.author.id == bertle):
@@ -180,6 +181,7 @@ async def light(ctx, brightness = 100):
 
         elif (ctx.author.id == cur_color_user):
             await connect_lights(ctx, int(0), int(0), int(0))
+            cur_color_user = 0
 
         else:
             await ctx.send(ctx.author.id)
@@ -209,13 +211,13 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     cmd = ["pigs", "p" ,"17", str(red)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     await ctx.send("Redchange")
-    await asyncio.sleep(.1)
+    await asyncio.sleep(.08)
         
     #green
     cmd = ["pigs", "p" ,"22", str(green)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     await ctx.send("Greenchange")
-    await asyncio.sleep(.1)
+    await asyncio.sleep(.08)
         
     #blue
     cmd = ["pigs", "p" ,"24", str(blue)]
