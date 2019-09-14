@@ -4,7 +4,7 @@ if __name__ == "__main__":
     from discord.ext import commands
     prefix = '[]'
     bot = commands.Bot(prefix)
-    import pigpio
+    import pigpio, asyncio
     pi = pigpio.pi()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

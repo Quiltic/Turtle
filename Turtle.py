@@ -169,7 +169,7 @@ def delete_file(file, guild):
 async def light(ctx, brightness = 100):
     if await light_perms(ctx):
         if (ctx.author.id == bertle):
-            await await connect_lights(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
+            await connect_lights(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
         else:
             await ctx.send(ctx.author.id)
             await ctx.send("Use setcolor instead!")
