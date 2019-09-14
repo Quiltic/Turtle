@@ -31,6 +31,7 @@ cwd = os.getcwd()
 
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0
+cur_color_user = 0
 
 import pigpio
 pi = pigpio.pi()
@@ -170,10 +171,15 @@ async def light(ctx, brightness = 100):
     brightness = brightness/100
     if await light_perms(ctx):
         if (ctx.author.id == bertle):
-            await connect_lights(ctx, int(255/brightness), int(255/brightness), int(160/brightness))
-        
+            await connect_lights(ctx, int(255*brightness), int(255*brightness), int(160*brightness))
+            cur_color_user = ctx.author.id
+
         elif (ctx.author.id == 73486425349165056):
-            await connect_lights(ctx, int(255/brightness), int(130/brightness), int(10/brightness))
+            await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))
+            cur_color_user = ctx.author.id
+
+        elif (ctx.author.id == cur_color_user):
+            await connect_lights(ctx, int(0), int(0), int(0))
 
         else:
             await ctx.send(ctx.author.id)
@@ -188,27 +194,10 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
     if await light_perms(ctx):
         print("started")
         
-        #Red
-        cmd = ["pigs", "p" ,"17", str(red)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        await ctx.send("Redchange")
-        await asyncio.sleep(.05)
-            
-        #green
-        cmd = ["pigs", "p" ,"22", str(green)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        await ctx.send("Greenchange")
-        await asyncio.sleep(.05)
-            
-        #blue
-        cmd = ["pigs", "p" ,"24", str(blue)]
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-        await ctx.send("Bluechange")
-        
-        msg = "Color is now  %s, %s, %s." % (red,green,blue)
-        
-        #await connect_lights(red,green,blue)
+        msg = "Color set to %s, %s, %s." % (red,green,blue)
+        await connect_lights(red,green,blue)
         await ctx.send(msg)
+        cur_color_user = ctx.author.id
 
 
 
