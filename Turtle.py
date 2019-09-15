@@ -237,9 +237,14 @@ async def color(ctx):
 
 
 @bot.command()
-async def fade(ctx , fadetime = 10, redout = 255, blueout = 255, greenout = 255, redin = LightsInfo["Color"][0], greenin = LightsInfo["Color"][1], bluein = LightsInfo["Color"][2]):
+async def fade(ctx , fadetime = 10, redout = 255, blueout = 255, greenout = 255, redin = None, greenin = 0, bluein = 0):
     """ Fades between two colors over x time (time reds_end greens_end blues_end begining_red begining_green begining_blue)"""
-    await ctx.send([redin, greenin, bluein])
+    await ctx.send([redin, greenin, bluein, LightsInfo["Color"]])
+    if redin == None:
+        redin = LightsInfo["Color"][0]
+        greenin = LightsInfo["Color"][1]
+        bluein = LightsInfo["Color"][2]
+    
     if light_perms(ctx):
         await fadebetween(ctx ,redin, greenin, bluein, redout, blueout, greenout, fadetime)
         await ctx.send("Faided!")
@@ -254,14 +259,9 @@ async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, gre
     redfade = ((redout-redin)/(fadetime))
     greenfade = ((greenout-greenin)/(fadetime))
     bluefade = ((blueout-bluein)/(fadetime))
-
-
-    await ctx.send([redin,greenin,bluein])
-    await connect_lights(ctx,int(redin),int(greenin),int(bluein))
-    
     
     for steps in range(int(fadetime)):
-        print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
+        #print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
         await connect_lights(ctx,int(redin+(redfade*steps)),int(greenin+(greenfade*steps)),int(bluein+(bluefade*steps)))
         await asyncio.sleep(.01)
     
