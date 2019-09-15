@@ -1,10 +1,10 @@
 import asyncio, subprocess
 import time, random, os, sys
+from datetime import datetime
 
 from wether import *
 
 from Lights import *
-
 
 
 try:
@@ -31,8 +31,8 @@ cwd = os.getcwd()
 
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0
-LightsInfo["User"] = 0
-LightsInfo["Color"] = [0,0,0]
+
+LightsInfo = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0}
 
 
 #import pigpio #requires Pigpio which I found from here :https://dordnung.de/raspberrypi-ledstrip/
@@ -509,14 +509,14 @@ async def perish(ctx):
     if await check_perms(ctx):
         await sendmsg(ctx,"Im off now.")
         print("Bye!")
-        pi.stop()
+        #pi.stop()
         await bot.close()
 
 #Turn off for the bot to use when updating
 async def turnoff(ctx):
     await sendmsg(ctx,"Restarting?")
     print("Bye!")
-    pi.stop()
+    #pi.stop()
     await bot.close()
     
 

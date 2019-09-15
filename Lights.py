@@ -1,18 +1,17 @@
 if __name__ == "__main__":
     import os, subprocess
-    import discord
+    import discord, asyncio
     from discord.ext import commands
-    prefix = '[]'
-    bot = commands.Bot(prefix)
-    import pigpio, asyncio
-    pi = pigpio.pi()
+    #prefix = '[]'
+    bot = 0 #commands.Bot(prefix)
+    #import pigpio 
+    #pi = pigpio.pi()
     bertle = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Light Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-from datetime import datetime
-LightsInfo = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0}
+
 
 
 async def light_perms(ctx):
