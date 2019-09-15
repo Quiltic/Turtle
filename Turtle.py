@@ -171,6 +171,7 @@ def delete_file(file, guild):
 
 @bot.command()
 async def light(ctx, brightness = 100):
+    """This basicly makes it a set color per person"""
     global LightsInfo
     brightness = brightness/100
     if await light_perms(ctx):
@@ -178,15 +179,19 @@ async def light(ctx, brightness = 100):
             await connect_lights(ctx, int(0), int(0), int(0))
             LightsInfo["User"] = 0
             LightsInfo["Color"] = [0,0,0]
+            await ctx.send("Turned off!")
+
         elif (ctx.author.id == bertle):
-            await connect_lights(ctx, int(255*brightness), int(255*brightness), int(160*brightness))
+            await connect_lights(ctx, int(255*brightness), int(255*brightness), int(190*brightness))
             LightsInfo["User"] = ctx.author.id
             LightsInfo["Color"] = [255,255,160]
+            await ctx.send("Changed!")
 
         elif (ctx.author.id == 73486425349165056):
             await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))
             LightsInfo["User"] = ctx.author.id
             LightsInfo["Color"] = [255,130,10]
+            await ctx.send("Changed!")
 
 
         else:
@@ -222,7 +227,28 @@ async def brightness(ctx, bright = 100):
         bright = bright/100
         await connect_lights(ctx, int(LightsInfo["Color"][0]*bright), int(LightsInfo["Color"][1]*bright), int(LightsInfo["Color"][2]*bright))    
         await ctx.send("Brightness changed.")
+
+
+@bot.command()
+async def fade(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 255, greenout = 255, fadetime = 30):
+    """ Fades between two colors over x time (255, 255, 255, 0, 0, 0, 30)"""
+    if light_perms(ctx):
+        await fadebetween(ctx ,redin, greenin, bluein, redout, blueout, greenout, fadetime)
+        await ctx.send("Faided!")
+
+
+#anoyingly only works in this file due to connect_lights, and cant be moved into another file.
+async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 255, greenout = 255, fadetime = 30):
+    redfade = int((redout-redin)/(fadetime*10))
+    greenfade = int((greenout-greenin)/(fadetime*10))
+    bluefade = int((blueout-bluein)/(fadetime*10))
     
+    for steps in range(fadetime*10):
+        await connect_lights(ctx,redin+(redfade*steps),greenin+(greenfade*steps),bluein+(bluefade*steps))
+        await asyncio.sleep(.01)
+    
+
+
 
 #anoyingly only works in this file, and cant be moved into another file.
 async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
@@ -232,13 +258,13 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     cmd = ["pigs", "p" ,"17", str(red)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     #await ctx.send("Redchange")
-    await asyncio.sleep(.01)
+    #await asyncio.sleep(.01)
         
     #green
     cmd = ["pigs", "p" ,"22", str(green)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
     #await ctx.send("Greenchange")
-    await asyncio.sleep(.01)
+    #await asyncio.sleep(.01)
         
     #blue
     cmd = ["pigs", "p" ,"24", str(blue)]
