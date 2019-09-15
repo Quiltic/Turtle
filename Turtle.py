@@ -230,8 +230,8 @@ async def brightness(ctx, bright = 100):
 
 
 @bot.command()
-async def fade(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 255, greenout = 255, fadetime = 30):
-    """ Fades between two colors over x time (255, 255, 255, 0, 0, 0, 30)"""
+async def fade(ctx , fadetime = 30, redout = 255, blueout = 255, greenout = 255, redin = LightsInfo["Color"][0], greenin = LightsInfo["Color"][1], bluein = LightsInfo["Color"][2]):
+    """ Fades between two colors over x time (time reds_end greens_end blues_end begining_red begining_green begining_blue)"""
     if light_perms(ctx):
         await fadebetween(ctx ,redin, greenin, bluein, redout, blueout, greenout, fadetime)
         await ctx.send("Faided!")
