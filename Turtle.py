@@ -235,10 +235,12 @@ async def fade(ctx , fadetime = 30, redout = 255, blueout = 255, greenout = 255,
     if light_perms(ctx):
         await fadebetween(ctx ,redin, greenin, bluein, redout, blueout, greenout, fadetime)
         await ctx.send("Faided!")
+        
 
 
 #anoyingly only works in this file due to connect_lights, and cant be moved into another file.
 async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 255, greenout = 255, fadetime = 30):
+    global LightsInfo
     fadetime = float(fadetime*10)
 
     redfade = ((redout-redin)/(fadetime))
@@ -253,6 +255,9 @@ async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blu
         await asyncio.sleep(.01)
     
     await connect_lights(ctx, redout, greenout, blueout)
+
+    
+    LightsInfo["Color"] = [redout,greenout,blueout]
     
 
 
