@@ -220,7 +220,7 @@ async def brightness(ctx, bright = 100):
             a += top
 
         bright = bright/100
-        await connect_lights(ctx, int(LightsInfo["Color"][0]*brightness), int(LightsInfo["Color"][1]*brightness), int(LightsInfo["Color"][2]*brightness))    
+        await connect_lights(ctx, int(LightsInfo["Color"][0]*bright), int(LightsInfo["Color"][1]*bright), int(LightsInfo["Color"][2]*bright))    
         await ctx.send("Brightness changed.")
     
 
@@ -231,19 +231,19 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     #Red
     cmd = ["pigs", "p" ,"17", str(red)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-    await ctx.send("Redchange")
+    #await ctx.send("Redchange")
     await asyncio.sleep(.01)
         
     #green
     cmd = ["pigs", "p" ,"22", str(green)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-    await ctx.send("Greenchange")
+    #await ctx.send("Greenchange")
     await asyncio.sleep(.01)
         
     #blue
     cmd = ["pigs", "p" ,"24", str(blue)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
-    await ctx.send("Bluechange")
+    #await ctx.send("Bluechange")
 
 
 
