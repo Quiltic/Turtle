@@ -229,8 +229,15 @@ async def brightness(ctx, bright = 100):
         await ctx.send("Brightness changed.")
 
 
+
 @bot.command()
-async def fade(ctx , fadetime = 30, redout = 255, blueout = 255, greenout = 255, redin = LightsInfo["Color"][0], greenin = LightsInfo["Color"][1], bluein = LightsInfo["Color"][2]):
+async def color(ctx):
+    await ctx.send("The current color is %s" % LightsInfo["Color"])
+
+
+
+@bot.command()
+async def fade(ctx , fadetime = 10, redout = 255, blueout = 255, greenout = 255, redin = LightsInfo["Color"][0], greenin = LightsInfo["Color"][1], bluein = LightsInfo["Color"][2]):
     """ Fades between two colors over x time (time reds_end greens_end blues_end begining_red begining_green begining_blue)"""
     if light_perms(ctx):
         await fadebetween(ctx ,redin, greenin, bluein, redout, blueout, greenout, fadetime)
@@ -239,7 +246,7 @@ async def fade(ctx , fadetime = 30, redout = 255, blueout = 255, greenout = 255,
 
 
 #anoyingly only works in this file due to connect_lights, and cant be moved into another file.
-async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 255, greenout = 255, fadetime = 30):
+async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, greenout = 255, blueout = 255, fadetime = 10):
     global LightsInfo
     fadetime = float(fadetime*10)
 
