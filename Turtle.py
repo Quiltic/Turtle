@@ -244,7 +244,8 @@ async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blu
     bluefade = int((blueout-bluein)/(fadetime*10))
     
     for steps in range(fadetime*10):
-        await connect_lights(ctx,redin+(redfade*steps),greenin+(greenfade*steps),bluein+(bluefade*steps))
+        print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
+        await connect_lights(ctx,(redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
         await asyncio.sleep(.01)
     
 
@@ -567,7 +568,7 @@ async def on_command_error(ctx, e):
 
 @bot.event
 async def on_ready():
-    global guilds
+    #global guilds
     await bot.change_presence(activity=currStatus)
 
     #guilds = dict()
