@@ -239,13 +239,13 @@ async def fade(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 
 
 #anoyingly only works in this file due to connect_lights, and cant be moved into another file.
 async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, blueout = 255, greenout = 255, fadetime = 30):
-    redfade = int((redout-redin)/(fadetime*10))
-    greenfade = int((greenout-greenin)/(fadetime*10))
-    bluefade = int((blueout-bluein)/(fadetime*10))
+    redfade = ((redout-redin)/(fadetime*10))
+    greenfade = ((greenout-greenin)/(fadetime*10))
+    bluefade = ((blueout-bluein)/(fadetime*10))
     
     for steps in range(fadetime*10):
         print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
-        await connect_lights(ctx,(redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
+        await connect_lights(ctx,int(redin+(redfade*steps)),int(greenin+(greenfade*steps)),int(bluein+(bluefade*steps)))
         await asyncio.sleep(.01)
     
 
