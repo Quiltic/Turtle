@@ -6,12 +6,13 @@ if __name__ == "__main__":
     bot = commands.Bot(prefix)
     import pigpio, asyncio
     pi = pigpio.pi()
+    bertle = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Light Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 from datetime import datetime
-Lights = {"Color": [255,255,255], "On?": False, "Delay": 60}
+LightsInfo = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0}
 
 
 async def light_perms(ctx):
@@ -95,8 +96,8 @@ async def newcolor(ctx, name, red, green, blue):
     msg = "New color has been saved as %s." % (name)
     await ctx.send(msg)
 
-
-
+'''
+'''
 async def light_wampin():
     """
     This is the startup for the lights it only runs when Lights["On?"] == True
@@ -112,13 +113,15 @@ async def light_wampin():
     dt_string = now.strftime("%H:%M:%S")
     print("time =", dt_string)
     #while (int(dt_string[6:]) > 5):
-    while (Lights["On?"] == True):
+    while (LightsInfo["On?"] == True):
         #This is to get it to run for every diration and in turtle to get the time/weather for brightness 
         #print(int(dt_string[6:]),60-int(dt_string[6:]))
-        #await asyncio.sleep(60-int(dt_string[6:]))
-        await asyncio.sleep(Lights["Delay"])
-        #now = datetime.now()
-        #dt_string = now.strftime("%H:%M:%S")
+        await asyncio.sleep(LightsInfo["Delay"]-int(dt_string[6:]))
+        #await asyncio.sleep(LightsInfo["Delay"])
+        now = datetime.now()
+        dt_string = now.strftime("%H:%M:%S")
+        if dt_string[:6] == "09:50":
+            pass
 
 
     await bot.get_user(bertle).send("Lights off!")
@@ -126,10 +129,6 @@ async def light_wampin():
 
 
 '''
-
-
-
-
 
     
 

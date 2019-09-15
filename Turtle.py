@@ -31,8 +31,9 @@ cwd = os.getcwd()
 
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0
-cur_color_user = 0
-cur_color = [0,0,0]
+LightsInfo["User"] = 0
+LightsInfo["Color"] = [0,0,0]
+
 
 #import pigpio #requires Pigpio which I found from here :https://dordnung.de/raspberrypi-ledstrip/
 #pi = pigpio.pi()
@@ -42,6 +43,7 @@ cur_color = [0,0,0]
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 @bot.command()
 async def showTerminal(ctx, *args):
+    """ Basicly is an ssh into the rasberry pi """
     cmd = []
     for a in args:
         cmd.append(a)
@@ -169,22 +171,22 @@ def delete_file(file, guild):
 
 @bot.command()
 async def light(ctx, brightness = 100):
-    global cur_color_user, cur_color
+    global LightsInfo
     brightness = brightness/100
     if await light_perms(ctx):
-        if ((ctx.author.id == cur_color_user) and (brightness == 1)):
+        if ((ctx.author.id == LightsInfo["User"]) and (brightness == 1)):
             await connect_lights(ctx, int(0), int(0), int(0))
-            cur_color_user = 0
-            cur_color = [0,0,0]
+            LightsInfo["User"] = 0
+            LightsInfo["Color"] = [0,0,0]
         elif (ctx.author.id == bertle):
             await connect_lights(ctx, int(255*brightness), int(255*brightness), int(160*brightness))
-            cur_color_user = ctx.author.id
-            cur_color = [255,255,160]
+            LightsInfo["User"] = ctx.author.id
+            LightsInfo["Color"] = [255,255,160]
 
         elif (ctx.author.id == 73486425349165056):
             await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))
-            cur_color_user = ctx.author.id
-            cur_color = [255,130,10]
+            LightsInfo["User"] = ctx.author.id
+            LightsInfo["Color"] = [255,130,10]
 
 
         else:
@@ -195,8 +197,8 @@ async def light(ctx, brightness = 100):
 
 @bot.command()
 async def setcolor(ctx, red = 0, green = 0, blue = 0):
-    global cur_color, cur_color_user
     """Changes the color to be ____."""
+    global LightsInfo 
     print("check")
     if await light_perms(ctx):
         print("started")
@@ -204,21 +206,21 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
         msg = "Color set to %s, %s, %s." % (red,green,blue)
         await connect_lights(ctx,red,green,blue)
         await ctx.send(msg)
-        cur_color_user = ctx.author.id
-        cur_color = [red,green,blue]
+        LightsInfo["User"] = ctx.author.id
+        LightsInfo["Color"] = [red,green,blue]
 
 
 @bot.command()
 async def brightness(ctx, bright = 100):
     """Changes the brightness of the current color without changing the base color"""
-    global cur_color
-    if light_perms(ctx):
-        top = 255-max(cur_color)#makes it into the highest values for the type of light basicly seting its brightness to 100%
-        for a in cur_color:
+    global LightsInfo
+    if await light_perms(ctx):
+        top = 255-max(LightsInfo["Color"])#makes it into the highest values for the type of light basicly seting its brightness to 100%
+        for a in LightsInfo["Color"]:
             a += top
 
         bright = bright/100
-        await connect_lights(ctx, int(cur_color[0]*brightness), int(cur_color[1]*brightness), int(cur_color[2]*brightness))    
+        await connect_lights(ctx, int(LightsInfo["Color"][0]*brightness), int(LightsInfo["Color"][1]*brightness), int(LightsInfo["Color"][2]*brightness))    
         await ctx.send("Brightness changed.")
     
 
@@ -261,8 +263,13 @@ async def timmer(ctx, delay = 5):
 
 @bot.command()
 async def weather(ctx):
+    """Tells you the current weather"""
+    #sadly only works for cincinati for now
+
     await ctx.message.add_reaction("🐢")
     data = advanced_weather()
+
+
     msg = "Currently: " + data["Description"]
     timestuff = "Around: "+ data["Time"]
     forcast=discord.Embed(title=timestuff, description=msg, color=0x1c57e3)
