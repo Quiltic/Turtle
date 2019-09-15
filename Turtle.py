@@ -184,7 +184,7 @@ async def light(ctx, brightness = 100):
         elif (ctx.author.id == bertle):
             await connect_lights(ctx, int(255*brightness), int(255*brightness), int(190*brightness))
             LightsInfo["User"] = ctx.author.id
-            LightsInfo["Color"] = [255,255,160]
+            LightsInfo["Color"] = [255,255,190]
             await ctx.send("Changed!")
 
         elif (ctx.author.id == 73486425349165056):
@@ -255,10 +255,13 @@ async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, gre
     greenfade = ((greenout-greenin)/(fadetime))
     bluefade = ((blueout-bluein)/(fadetime))
 
-    #print(redfade,greenfade,bluefade)
+
+    await ctx.send([redin,greenin,bluein])
+    await connect_lights(ctx,int(redin),int(greenin),int(bluein))
+    
     
     for steps in range(int(fadetime)):
-        #print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
+        print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
         await connect_lights(ctx,int(redin+(redfade*steps)),int(greenin+(greenfade*steps)),int(bluein+(bluefade*steps)))
         await asyncio.sleep(.01)
     
