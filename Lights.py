@@ -11,7 +11,8 @@ if __name__ == "__main__":
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Light Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+#import pigpio #requires Pigpio which I found from here :https://dordnung.de/raspberrypi-ledstrip/
+#pi = pigpio.pi()
 
 
 async def light_perms(ctx):

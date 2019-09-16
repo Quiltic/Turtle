@@ -24,7 +24,7 @@ except:
 
 prefix = '[]'
 bot = commands.Bot(prefix)#, connector=aiohttp.TCPConnector(ssl=False)
-currStatus = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
+curr_status = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
 
 #get home directory
 cwd = os.getcwd()
@@ -32,11 +32,10 @@ cwd = os.getcwd()
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0
 
-LightsInfo = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0}
+lights_info = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0}
 
 
-#import pigpio #requires Pigpio which I found from here :https://dordnung.de/raspberrypi-ledstrip/
-#pi = pigpio.pi()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Custom Admin Commands ###################
@@ -70,9 +69,9 @@ async def update(ctx):
         await sendmsg(ctx,"Directory changed")
         print("changed cd")
         #open update
-        callfreind = "python3 /home/pi/Turtle/TurtleUpdate.py &"
-        print(callfreind)
-        os.system(callfreind)
+        call_freind = "python3 /home/pi/Turtle/TurtleUpdate.py &"
+        print(call_freind)
+        os.system(call_freind)
         #subprocess.Popen(callfreind)
 
         await sendmsg(ctx,"Opened Friend!")
@@ -172,25 +171,25 @@ def delete_file(file, guild):
 @bot.command()
 async def light(ctx, brightness = 100):
     """This basicly makes it a set color per person"""
-    global LightsInfo
+    global lights_info
     brightness = brightness/100
     if await light_perms(ctx):
-        if ((ctx.author.id == LightsInfo["User"]) and (brightness == 1)):
+        if ((ctx.author.id == lights_info["User"]) and (brightness == 1)):
             await connect_lights(ctx, int(0), int(0), int(0))
-            LightsInfo["User"] = 0
-            LightsInfo["Color"] = [0,0,0]
+            lights_info["User"] = 0
+            lights_info["Color"] = [0,0,0]
             await ctx.send("Turned off!")
 
         elif (ctx.author.id == bertle):
             await connect_lights(ctx, int(255*brightness), int(255*brightness), int(190*brightness))
-            LightsInfo["User"] = ctx.author.id
-            LightsInfo["Color"] = [255,255,190]
+            lights_info["User"] = ctx.author.id
+            lights_info["Color"] = [255,255,190]
             await ctx.send("Changed!")
 
         elif (ctx.author.id == 73486425349165056):
             await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))
-            LightsInfo["User"] = ctx.author.id
-            LightsInfo["Color"] = [255,130,10]
+            lights_info["User"] = ctx.author.id
+            lights_info["Color"] = [255,130,10]
             await ctx.send("Changed!")
 
 
@@ -203,7 +202,7 @@ async def light(ctx, brightness = 100):
 @bot.command()
 async def setcolor(ctx, red = 0, green = 0, blue = 0):
     """Changes the color to be ____."""
-    global LightsInfo 
+    global lights_info 
     print("check")
     if await light_perms(ctx):
         print("started")
@@ -211,64 +210,63 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
         msg = "Color set to %s, %s, %s." % (red,green,blue)
         await connect_lights(ctx,red,green,blue)
         await ctx.send(msg)
-        LightsInfo["User"] = ctx.author.id
-        LightsInfo["Color"] = [red,green,blue]
+        lights_info["User"] = ctx.author.id
+        lights_info["Color"] = [red,green,blue]
 
 
 @bot.command()
 async def brightness(ctx, bright = 100):
     """Changes the brightness of the current color without changing the base color"""
-    global LightsInfo
+    global lights_info
     if await light_perms(ctx):
-        top = 255-max(LightsInfo["Color"])#makes it into the highest values for the type of light basicly seting its brightness to 100%
-        for a in LightsInfo["Color"]:
+        top = 255-max(lights_info["Color"])#makes it into the highest values for the type of light basicly seting its brightness to 100%
+        for a in lights_info["Color"]:
             a += top
 
         bright = bright/100
-        await connect_lights(ctx, int(LightsInfo["Color"][0]*bright), int(LightsInfo["Color"][1]*bright), int(LightsInfo["Color"][2]*bright))    
+        await connect_lights(ctx, int(lights_info["Color"][0]*bright), int(lights_info["Color"][1]*bright), int(lights_info["Color"][2]*bright))    
         await ctx.send("Brightness changed.")
 
 
 
 @bot.command()
 async def color(ctx):
-    await ctx.send("The current color is %s" % LightsInfo["Color"])
+    await ctx.send("The current color is %s" % lights_info["Color"])
 
 
 
 @bot.command()
-async def fade(ctx , fadetime = 10, redout = 255, blueout = 255, greenout = 255, redin = None, greenin = 0, bluein = 0):
+async def fade(ctx , fade_time = 10, red_out = 255, blue_out = 255, green_out = 255, red_in = None, green_in = 0, blue_in = 0):
     """ Fades between two colors over x time (time reds_end greens_end blues_end begining_red begining_green begining_blue)"""
-    await ctx.send([redin, greenin, bluein, LightsInfo["Color"]])
-    if redin == None:
-        redin = LightsInfo["Color"][0]
-        greenin = LightsInfo["Color"][1]
-        bluein = LightsInfo["Color"][2]
+    if red_in == None:
+        red_in = lights_info["Color"][0]
+        green_in = lights_info["Color"][1]
+        blue_in = lights_info["Color"][2]
     
     if light_perms(ctx):
-        await fadebetween(ctx ,redin, greenin, bluein, redout, blueout, greenout, fadetime)
+        await fadebetween(ctx ,red_in, green_in, blue_in, red_out, blue_out, green_out, fade_time)
         await ctx.send("Faided!")
         
 
 
 #anoyingly only works in this file due to connect_lights, and cant be moved into another file.
-async def fadebetween(ctx ,redin = 0, greenin = 0, bluein = 0, redout = 255, greenout = 255, blueout = 255, fadetime = 10):
-    global LightsInfo
-    fadetime = float(fadetime*10)
+async def fadebetween(ctx ,red_in = 0, green_in = 0, blue_in = 0, red_out = 255, green_out = 255, blue_out = 255, fade_time = 10):
+    global lights_info
+    fade_time = float(fade_time*10)
 
-    redfade = ((redout-redin)/(fadetime))
-    greenfade = ((greenout-greenin)/(fadetime))
-    bluefade = ((blueout-bluein)/(fadetime))
+    red_fade = ((red_out-red_in)/(fade_time))
+    green_fade = ((green_out-green_in)/(fade_time))
+    blue_fade = ((blue_out-blue_in)/(fade_time))
     
-    for steps in range(int(fadetime)):
-        #print((redin+(redfade*steps)),(greenin+(greenfade*steps)),(bluein+(bluefade*steps)))
-        await connect_lights(ctx,int(redin+(redfade*steps)),int(greenin+(greenfade*steps)),int(bluein+(bluefade*steps)))
+    for steps in range(int(fade_time)):
+        #print((red_in+(red_fade*steps)),(green_in+(green_fade*steps)),(blue_in+(blue_fade*steps)))
+        await connect_lights(ctx,int(red_in+(red_fade*steps)),int(green_in+(green_fade*steps)),int(blue_in+(blue_fade*steps)))
         await asyncio.sleep(.01)
     
-    await connect_lights(ctx, redout, greenout, blueout)
+    await connect_lights(ctx, red_out, green_out, blue_out)
 
     
-    LightsInfo["Color"] = [redout,greenout,blueout]
+    lights_info["Color"] = [red_out,green_out,blue_out]
     
 
 
@@ -302,8 +300,16 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
 
 
 @bot.command()
-async def timmer(ctx, delay = 5):
-    """Makes me set a timemer for # then 🐢"""
+async def timmer(ctx, delay = 5, tpe = 'sec'):
+    """Makes me set a timemer for # then 🐢
+        Usage []timmer amount min/sec/hour
+        Default is:  5 sec
+    """
+    if tpe == 'min':
+        delay *= 60 
+    if tpe == 'hour':
+        delay *= 3600
+
     await ctx.send(("Counting down from: %s" % (delay)))
     await asyncio.sleep(delay)
     await ctx.send("Times up!")
@@ -320,8 +326,8 @@ async def weather(ctx):
 
 
     msg = "Currently: " + data["Description"]
-    timestuff = "Around: "+ data["Time"]
-    forcast=discord.Embed(title=timestuff, description=msg, color=0x1c57e3)
+    time_stuff = "Around: "+ data["Time"]
+    forcast=discord.Embed(title=time_stuff, description=msg, color=0x1c57e3)
     forcast.set_author(name="Turtle's Forecast") #icon_url="Tertle.png" 
     #forcast.set_thumbnail(url="Tertle.png")
     forcast.add_field(name="Current Tempterture (F):", value=data["Temp"], inline=True)
@@ -380,7 +386,7 @@ def randomnum(low,high):
 
 #rolls dice
 async def dice(ctx, *args):
-    addon = '0'
+    add_on = '0'
     #await sendmsg(ctx, randomnum(1,20))
 
     message = '[]r ' + str(' '.join(args)).lower()
@@ -388,10 +394,10 @@ async def dice(ctx, *args):
     
     
     if "+" in message:
-        addon = message[message.index("+"):]
+        add_on = message[message.index("+"):]
         message = message[:message.index("+")]
     elif "-" in message:
-        addon = message[message.index("-"):]
+        add_on = message[message.index("-"):]
         message = message[:message.index("-")]
     
     if " 2d20" in message:
@@ -403,19 +409,19 @@ async def dice(ctx, *args):
         numbers = numbers.replace("d", ' ')
         split = numbers.index(" ")
         
-        curdice = randomnum(1,int(numbers[split+1:]))
-        total = curdice
+        cur_dice = randomnum(1,int(numbers[split+1:]))
+        total = cur_dice
         
         if int(numbers[:split]) < 450:
-            msg = 'Dicerolls: %i ' % (curdice)
+            msg = 'Dicerolls: %i ' % (cur_dice)
             for a in range(int(numbers[:split])-1):
-                curdice = randomnum(1,int(numbers[split+1:]))
-                total += curdice
-                msg = msg + '+ %i ' % (curdice)
-            if (addon != '0'):
-                total = int(eval(str(total)+addon))
-            if addon != '0':
-                msg = msg + addon[0] + " " + addon[1:] +"= %i" % (total)
+                cur_dice = randomnum(1,int(numbers[split+1:]))
+                total += cur_dice
+                msg = msg + '+ %i ' % (cur_dice)
+            if (add_on != '0'):
+                total = int(eval(str(total)+add_on))
+            if add_on != '0':
+                msg = msg + add_on[0] + " " + add_on[1:] +"= %i" % (total)
             else:
                 msg = msg + "= %i" % (total)
         else:
@@ -423,8 +429,8 @@ async def dice(ctx, *args):
 
     else:
         msg = 'd20: %i' % (randomnum(1,20))
-        if addon != '0':
-            msg = msg + ' ' + addon[0] + " " + addon[1:] + " = " + str(eval(str(msg[4:]+addon)))
+        if add_on != '0':
+            msg = msg + ' ' + add_on[0] + " " + add_on[1:] + " = " + str(eval(str(msg[4:]+add_on)))
     try:
         if msg == 'grumbel':
             error#just error 
@@ -591,7 +597,7 @@ async def on_command_error(ctx, e):
 @bot.event
 async def on_ready():
     #global guilds
-    await bot.change_presence(activity=currStatus)
+    await bot.change_presence(activity=curr_status)
 
     #guilds = dict()
     #for guild in bot.guilds:
