@@ -22,6 +22,8 @@ except:
 
 #tts_path = 'resources/voice.exe'
 
+
+""" Basic startup for a discord bot"""
 prefix = '[]'
 bot = commands.Bot(prefix)#, connector=aiohttp.TCPConnector(ssl=False)
 curr_status = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
@@ -30,9 +32,10 @@ curr_status = discord.Activity(name="turtle sounds. | []help", type=discord.Acti
 cwd = os.getcwd()
 
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
-cur_user = 0
+cur_user = 0 # the curent user that is talking to turtle
 
-lights_info = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0}
+
+lights_info = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0} #all of the info for the lights
 
 
 
@@ -49,11 +52,11 @@ async def showTerminal(ctx, *args):
     print(cmd)
 
     if await check_perms(ctx):
-        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
+        output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate() # the part that runs the command into the terminal
         #output = pipe.read()
         for out in output:
             #words = "```" + out + "```"
-            await ctx.send(out)
+            await ctx.send(out) # Print the output of the terminal, it will look weard because it keeps the "b " and \n dont know why
         
 
 @bot.command()
@@ -128,16 +131,19 @@ async def ipadress(ctx):
 
 
 def rename_file(old_filepath, new_filepath):
+    """ Rename a file """
     os.rename(old_filepath, new_filepath)
 
 
 def getText(file):
+    """ Read a file and return the contense """
     with open(file, "r") as f:
         lines = f.read()
         return lines.strip()
 
 
 async def check_perms(ctx):
+    """ This gets weather or not the persion is me (Bertle) """
     print("Checking")
     user = ctx.author.id
     print(bertle,user) #see id of user vs my id
@@ -145,7 +151,7 @@ async def check_perms(ctx):
         return(True)
     else:
         print("Cant give acsess to user: %s" % (ctx.author))
-        await ctx.send("Sorry, but you dont have access to that.")
+        await ctx.send("Sorry pal, but you dont have access.")
         return(False)
 
         #raise TurtleException('invalid permissions to update',
@@ -171,29 +177,35 @@ def delete_file(file, guild):
 @bot.command()
 async def light(ctx, brightness = 100):
     """This basicly makes it a set color per person"""
+
     global lights_info
-    brightness = brightness/100
+    brightness = brightness/100 # how bright the lights are
+
     if await light_perms(ctx):
+        #Turns off the lights
         if ((ctx.author.id == lights_info["User"]) and (brightness == 1)):
             await connect_lights(ctx, int(0), int(0), int(0))
             lights_info["User"] = 0
             lights_info["Color"] = [0,0,0]
             await ctx.send("Turned off!")
 
+        #my color
         elif (ctx.author.id == bertle):
-            await connect_lights(ctx, int(255*brightness), int(255*brightness), int(190*brightness))
+            await connect_lights(ctx, int(220*brightness), int(255*brightness), int(190*brightness))  # Change the color
             lights_info["User"] = ctx.author.id
-            lights_info["Color"] = [255,255,190]
+            lights_info["Color"] = [220,255,190]
             await ctx.send("Changed!")
 
+        #roomates color
         elif (ctx.author.id == 73486425349165056):
-            await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))
+            await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))  # Change the color
             lights_info["User"] = ctx.author.id
             lights_info["Color"] = [255,130,10]
             await ctx.send("Changed!")
 
 
         else:
+            #if someone is a light wizard but doesent have a set color
             await ctx.send(ctx.author.id)
             await ctx.send("Use setcolor instead!")
 
@@ -204,12 +216,15 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
     """Changes the color to be ____."""
     global lights_info 
     print("check")
+
     if await light_perms(ctx):
         print("started")
+
+        await connect_lights(ctx,red,green,blue) # Change the color
         
         msg = "Color set to %s, %s, %s." % (red,green,blue)
-        await connect_lights(ctx,red,green,blue)
         await ctx.send(msg)
+
         lights_info["User"] = ctx.author.id
         lights_info["Color"] = [red,green,blue]
 
@@ -220,17 +235,22 @@ async def brightness(ctx, bright = 100):
     global lights_info
     if await light_perms(ctx):
         top = 255-max(lights_info["Color"])#makes it into the highest values for the type of light basicly seting its brightness to 100%
-        for a in lights_info["Color"]:
-            a += top
+        
+        #suposidly makes the colors into the max val and saves it, suposidly
+        lights_info["Color"] = [int((lights_info["Color"][0]+top)*bright), int((lights_info["Color"][1]+top)*bright), int((lights_info["Color"][2]+top)*bright)]
+        #for a in lights_info["Color"]:
+        #    a += top
 
         bright = bright/100
-        await connect_lights(ctx, int(lights_info["Color"][0]*bright), int(lights_info["Color"][1]*bright), int(lights_info["Color"][2]*bright))    
+        await connect_lights(ctx, int(lights_info["Color"][0]), int(lights_info["Color"][1]), int(lights_info["Color"][2]))    
+        #await connect_lights(ctx, int(lights_info["Color"][0]*bright), int(lights_info["Color"][1]*bright), int(lights_info["Color"][2]*bright)) # incase the above doesent work uncomment me
         await ctx.send("Brightness changed.")
 
 
 
 @bot.command()
 async def color(ctx):
+    """ Get the curent RBG for the color displayed """
     await ctx.send("The current color is %s" % lights_info["Color"])
 
 
@@ -238,6 +258,7 @@ async def color(ctx):
 @bot.command()
 async def fade(ctx , fade_time = 10, red_out = 255, blue_out = 255, green_out = 255, red_in = None, green_in = 0, blue_in = 0):
     """ Fades between two colors over x time (time reds_end greens_end blues_end begining_red begining_green begining_blue)"""
+    # So for some reason I cant just put this into the filler, thus it has to be done like this
     if red_in == None:
         red_in = lights_info["Color"][0]
         green_in = lights_info["Color"][1]
@@ -251,22 +272,25 @@ async def fade(ctx , fade_time = 10, red_out = 255, blue_out = 255, green_out = 
 
 #anoyingly only works in this file due to connect_lights, and cant be moved into another file.
 async def fadebetween(ctx ,red_in = 0, green_in = 0, blue_in = 0, red_out = 255, green_out = 255, blue_out = 255, fade_time = 10):
+    """ Used to have any function fade not just the one command """
     global lights_info
-    fade_time = float(fade_time*10)
+    fade_time = float(fade_time*10) # makes it so that it changes 10 times a second, mostly for lower time amounts like 1 or 5
 
+    # To incrimentlaly change the colors over a set time evenly
     red_fade = ((red_out-red_in)/(fade_time))
     green_fade = ((green_out-green_in)/(fade_time))
     blue_fade = ((blue_out-blue_in)/(fade_time))
     
+    # Achual fading
     for steps in range(int(fade_time)):
         #print((red_in+(red_fade*steps)),(green_in+(green_fade*steps)),(blue_in+(blue_fade*steps)))
         await connect_lights(ctx,int(red_in+(red_fade*steps)),int(green_in+(green_fade*steps)),int(blue_in+(blue_fade*steps)))
-        await asyncio.sleep(.01)
+        await asyncio.sleep(.01) # so that other commands can be run in the meantime. Yes this command slows turtle, but it is coooooollllll
     
-    await connect_lights(ctx, red_out, green_out, blue_out)
+    await connect_lights(ctx, red_out, green_out, blue_out) # it doesent ever make it the final color without this
 
     
-    lights_info["Color"] = [red_out,green_out,blue_out]
+    lights_info["Color"] = [red_out,green_out,blue_out] # change the color of the lights to this
     
 
 
@@ -274,7 +298,7 @@ async def fadebetween(ctx ,red_in = 0, green_in = 0, blue_in = 0, red_out = 255,
 #anoyingly only works in this file, and cant be moved into another file.
 async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
     """Does all the lights stuff with the IO of the pi"""
-    print("colors")
+    print("colors")  # this dident work with os.system() and so I used subprocess
     #Red
     cmd = ["pigs", "p" ,"17", str(red)]
     output = subprocess.Popen(cmd, stdout=subprocess.PIPE ).communicate()
@@ -324,7 +348,7 @@ async def weather(ctx):
     await ctx.message.add_reaction("🐢")
     data = advanced_weather()
 
-
+    #shows the achual info
     msg = "Currently: " + data["Description"]
     time_stuff = "Around: "+ data["Time"]
     forcast=discord.Embed(title=time_stuff, description=msg, color=0x1c57e3)
@@ -392,19 +416,21 @@ async def dice(ctx, *args):
     message = '[]r ' + str(' '.join(args)).lower()
     print (message)
     
-    
+    #splits the data to get the addon
     if "+" in message:
         add_on = message[message.index("+"):]
         message = message[:message.index("+")]
     elif "-" in message:
-        add_on = message[message.index("-"):]
+        add_on = message[message.index("-"):] 
         message = message[:message.index("-")]
     
-    if " 2d20" in message:
-        #await sendmsg(ctx,'d20: %i' % (randomnum(1,20)))
-        msg = 'd20: %i' % (randomnum(1,20))
+    # AN IRELIVANT PART!!!
+    # rolls 2 d 20 then gives the best
+    #if " 2d20" in message:
+    #    #await sendmsg(ctx,'d20: %i' % (randomnum(1,20)))
+    #    msg = 'd20: %i' % (randomnum(1,20))
 
-    elif (message != "[]r +") and (message != "[]r -") and (message != "[]r "):
+    if (message != "[]r +") and (message != "[]r -") and (message != "[]r "):
         numbers = (message.replace("[]r ",''))
         numbers = numbers.replace("d", ' ')
         split = numbers.index(" ")
@@ -412,32 +438,44 @@ async def dice(ctx, *args):
         cur_dice = randomnum(1,int(numbers[split+1:]))
         total = cur_dice
         
+        # To stop it from going over discords max chars in a send
         if int(numbers[:split]) < 450:
+
+            #roll X number of dice roles
             msg = 'Dicerolls: %i ' % (cur_dice)
             for a in range(int(numbers[:split])-1):
-                cur_dice = randomnum(1,int(numbers[split+1:]))
+                cur_dice = randomnum(1,int(numbers[split+1:])) # get the number of dice
                 total += cur_dice
-                msg = msg + '+ %i ' % (cur_dice)
-            if (add_on != '0'):
-                total = int(eval(str(total)+add_on))
+                msg = msg + '+ %i ' % (cur_dice) #add the dice to the end of the file
+
             if add_on != '0':
+                total = int(eval(str(total)+add_on))
                 msg = msg + add_on[0] + " " + add_on[1:] +"= %i" % (total)
             else:
                 msg = msg + "= %i" % (total)
         else:
-            msg = 'grumbel'
+            #msg = 'grumbel'
+            #if the string is longer than discords max char count do the folowing
+            await sendmsg(ctx, "Discord doesent like long stuffs so here is the summup.")
+            msg = ('Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
 
     else:
+        # []r is just a d20
         msg = 'd20: %i' % (randomnum(1,20))
         if add_on != '0':
             msg = msg + ' ' + add_on[0] + " " + add_on[1:] + " = " + str(eval(str(msg[4:]+add_on)))
+    
+
+    
+    # I dont know why I did this but Im going to keep it for now
+    '''
     try:
         if msg == 'grumbel':
             error#just error 
     except:
         await sendmsg(ctx, "Discord doesent like long stuffs so here is the summup.")
         msg = ('Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
-    
+    '''
     return(msg)
 
 
@@ -445,11 +483,11 @@ async def dice(ctx, *args):
 
 
 
-#this is from old turtle but i still love it
+# this is from old turtle but i still love it
 async def conversate(message):
     global cur_user
 
-    if "make me a sandwich" in message.content.lower(): # simple ping
+    if "make me a sandwich" in message.content.lower(): # simple ping with a file
         await sendmsgorig(message, "Here you go!")
         await message.channel.send(file=discord.File('Sandwich.jpg'))
 
