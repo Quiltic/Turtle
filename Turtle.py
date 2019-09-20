@@ -1,11 +1,11 @@
-import asyncio, subprocess
-import time, random, os, sys
-from datetime import datetime
+#import asyncio, subprocess
+#import time, random, os, sys
+#from datetime import datetime
 
-from wether import *
+#from wether import *
+#from Lights import *
 
-from Lights import *
-
+from Tools import *
 
 try:
     import discord
@@ -14,6 +14,8 @@ except:
     os.system("python3 -m pip install discord.py")
     import discord
     from discord.ext import commands
+
+
 
 #from pydub import AudioSegment
 #from guild_info import GuildInfo
@@ -126,48 +128,6 @@ async def ipadress(ctx):
                     pass    
 
         await ctx.send(IPAddr)
-
-
-
-
-def rename_file(old_filepath, new_filepath):
-    """ Rename a file """
-    os.rename(old_filepath, new_filepath)
-
-
-def getText(file):
-    """ Read a file and return the contense """
-    with open(file, "r") as f:
-        lines = f.read()
-        return lines.strip()
-
-
-async def check_perms(ctx):
-    """ This gets weather or not the persion is me (Bertle) """
-    print("Checking")
-    user = ctx.author.id
-    print(bertle,user) #see id of user vs my id
-    if bertle == user:
-        return(True)
-    else:
-        print("Cant give acsess to user: %s" % (ctx.author))
-        await ctx.send("Sorry pal, but you dont have access.")
-        return(False)
-
-        #raise TurtleException('invalid permissions to update',
-        #                     'You don\'t got permission to do that, pardner.')
-    #else:
-    #    raise NotImplementedError()
-
-
-
-
-"""
-#redo
-def delete_file(file, guild):
-    path = guilds[guild.id].sound_folder
-    os.remove(sound)
-"""
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -386,160 +346,9 @@ async def GitURL(ctx):
     await ctx.send("My repository is: https://github.com/Quiltic/Turtle.git")
 
 
-
-
-
-
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-###################### Basic Commands ###################
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-#this is to send complex messages and its from old turtle
-async def sendmsg(ctx,msg):
-    await ctx.send(msg)
-
-#this is for old commands that dont work without it from message event
-async def sendmsgorig(message,msg):
-    await message.channel.send(msg)
-
-#random number
-def randomnum(low,high):
-    return random.randrange(low,high+1)
-
-
-#rolls dice
-async def dice(ctx, *args):
-    add_on = '0'
-    #await sendmsg(ctx, randomnum(1,20))
-
-    message = '[]r ' + str(' '.join(args)).lower()
-    print (message)
-    
-    #splits the data to get the addon
-    if "+" in message:
-        add_on = message[message.index("+"):]
-        message = message[:message.index("+")]
-    elif "-" in message:
-        add_on = message[message.index("-"):] 
-        message = message[:message.index("-")]
-    
-    # AN IRELIVANT PART!!!
-    # rolls 2 d 20 then gives the best
-    #if " 2d20" in message:
-    #    #await sendmsg(ctx,'d20: %i' % (randomnum(1,20)))
-    #    msg = 'd20: %i' % (randomnum(1,20))
-
-    if (message != "[]r +") and (message != "[]r -") and (message != "[]r "):
-        numbers = (message.replace("[]r ",''))
-        numbers = numbers.replace("d", ' ')
-        split = numbers.index(" ")
-        
-        cur_dice = randomnum(1,int(numbers[split+1:]))
-        total = cur_dice
-        
-        # To stop it from going over discords max chars in a send
-        if int(numbers[:split]) < 450:
-
-            #roll X number of dice roles
-            msg = 'Dicerolls: %i ' % (cur_dice)
-            for a in range(int(numbers[:split])-1):
-                cur_dice = randomnum(1,int(numbers[split+1:])) # get the number of dice
-                total += cur_dice
-                msg = msg + '+ %i ' % (cur_dice) #add the dice to the end of the file
-
-            if add_on != '0':
-                total = int(eval(str(total)+add_on))
-                msg = msg + add_on[0] + " " + add_on[1:] +"= %i" % (total)
-            else:
-                msg = msg + "= %i" % (total)
-        else:
-            #msg = 'grumbel'
-            #if the string is longer than discords max char count do the folowing
-            await sendmsg(ctx, "Discord doesent like long stuffs so here is the summup.")
-            msg = ('Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
-
-    else:
-        # []r is just a d20
-        msg = 'd20: %i' % (randomnum(1,20))
-        if add_on != '0':
-            msg = msg + ' ' + add_on[0] + " " + add_on[1:] + " = " + str(eval(str(msg[4:]+add_on)))
-    
-
-    
-    # I dont know why I did this but Im going to keep it for now
-    '''
-    try:
-        if msg == 'grumbel':
-            error#just error 
-    except:
-        await sendmsg(ctx, "Discord doesent like long stuffs so here is the summup.")
-        msg = ('Total: %i' % (randomnum(int(numbers[:split]),int(numbers[split+1:])*int(numbers[:split]))))
-    '''
-    return(msg)
-
-
-
-
-
-
-# this is from old turtle but i still love it
-async def conversate(message):
-    global cur_user
-
-    if "make me a sandwich" in message.content.lower(): # simple ping with a file
-        await sendmsgorig(message, "Here you go!")
-        await message.channel.send(file=discord.File('Sandwich.jpg'))
-
-    elif "bubble" in message.content.lower(): # simple ping
-        await sendmsgorig(message, "BUBBLES!")
-
-    elif "random" == message.content.lower():
-        await sendmsgorig(message, "RANDOM NUMBERS YOU SAY!?")
-        for a in range(randomnum(2,24)):
-            await sendmsgorig(message,randomnum(10,10000))
-        await sendmsgorig(message, "Fin.")
-
-    elif "what time is it" in message.content.lower():
-        await sendmsgorig(message, "TURTLE TIME!")
-        msg = "🐢"
-        for a in range(randomnum(2,24)):
-            msg = msg + "🐢"
-        await sendmsgorig(message, msg)
-
-    elif "i need an army" in message.content.lower():
-        await sendmsgorig(message, "On it boss!")
-        msg = "🐢"
-        rand = randomnum(100,200)
-        for a in range(rand):
-            msg = msg + "🐢"
-        await sendmsgorig(message, msg)
-        msg = "I was able to get " + str(rand) + " Turtles for the cause!"
-        await sendmsgorig(message, msg)
-
-    elif "yell at " in message.content.lower():
-        msg = ("They arnt here, sorry %s." % (message.author.name))
-        for users in bot.users:
-            for b in message.guild.members:
-                if b == users:
-                    if message.content.lower()[8:] in users.name.lower():
-                        msg = "Hey <@%s>! %s wants you." % (users.id,message.author.name)
-        await sendmsgorig(message, msg)
-
-    elif "help" in message.content.lower():
-        await sendmsgorig(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness..., help rase an army, get the time")
-        await sendmsgorig(message, "Helpful?")
-    elif "hi" in message.content.lower(): # simple ping
-        await sendmsgorig(message, "Hello!")
-    else:# simple ping
-        await sendmsgorig(message, "Ok then!") 
-    
-    cur_user = 0
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Sound Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 
 async def connect_to_user(ctx):
     try:
@@ -549,25 +358,6 @@ async def connect_to_user(ctx):
     except:
         raise TurtleException('User was not in a voice channel.',
                              msg='Get in a voice channel!')
-
-
-async def connect_to_channel(channel, vc=None):
-    if not channel:
-        raise AttributeError('channel cannot be None.')
-
-    if not vc:
-        vc = await channel.connect(reconnect=False)
-
-    if vc.channel is not channel:
-        await vc.move_to(channel)
-
-    return vc
-
-
-def get_existing_voice_client(guild):
-    for vc in bot.voice_clients:
-        if vc.guild is guild:
-            return vc
 
 #Join the voice channel
 @bot.command()
