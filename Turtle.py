@@ -59,7 +59,8 @@ async def showTerminal(ctx, *args):
         for out in output:
             #words = "```" + out + "```"
             await ctx.send(out) # Print the output of the terminal, it will look weard because it keeps the "b " and \n dont know why
-        
+    else:
+        await ctx.send("Failed!")
 
 @bot.command()
 async def update(ctx):
@@ -84,6 +85,8 @@ async def update(ctx):
         
         #turn off
         await turnoff(ctx)
+    else:
+        await ctx.send("Failed!")
 
 
 #this uploads turtle to github if enabled.
@@ -97,6 +100,8 @@ async def upload(ctx):
         os.system("git commit -m Turtle pushed me.")
         time.sleep(3)
         os.system("git push")
+    else:
+        await ctx.send("Failed!")
 
 
 @bot.command()
@@ -128,6 +133,29 @@ async def ipadress(ctx):
                     pass    
 
         await ctx.send(IPAddr)
+    else:
+        await ctx.send("Failed!")
+
+
+
+
+async def check_perms(ctx):
+    """ This gets weather or not the persion is me (Bertle) """
+    print("Checking")
+    user = ctx.author.id
+    print(bertle,user) #see id of user vs my id
+    if bertle == user:
+        return(True)
+    else:
+        print("Cant give acsess to user: %s" % (ctx.author))
+        await ctx.send("Sorry pal, but you dont have access.")
+        return(False)
+
+        #raise TurtleException('invalid permissions to update',
+        #                     'You don\'t got permission to do that, pardner.')
+    #else:
+    #    raise NotImplementedError()
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -140,7 +168,7 @@ async def light(ctx, brightness = 100):
 
     global lights_info
     brightness = brightness/100 # how bright the lights are
-    await ctx.message.add_reaction("🐢")
+    await ctx.message.add_reaction("💡")
 
     if await light_perms(ctx):
         #Turns off the lights

@@ -7,7 +7,7 @@ if __name__ == "__main__":
     import discord
     from discord.ext import commands
     bot = commands.Bot(";")
-    bertle = 0
+    bertle = 275002179763306517
 
 
 #all of the needed imports
@@ -126,24 +126,6 @@ def getText(file):
     with open(file, "r") as f:
         lines = f.read()
         return lines.strip()
-
-
-async def check_perms(ctx):
-    """ This gets weather or not the persion is me (Bertle) """
-    print("Checking")
-    user = ctx.author.id
-    print(bertle,user) #see id of user vs my id
-    if bertle == user:
-        return(True)
-    else:
-        print("Cant give acsess to user: %s" % (ctx.author))
-        await ctx.send("Sorry pal, but you dont have access.")
-        return(False)
-
-        #raise TurtleException('invalid permissions to update',
-        #                     'You don\'t got permission to do that, pardner.')
-    #else:
-    #    raise NotImplementedError()
 
 
 
