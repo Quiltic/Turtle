@@ -168,6 +168,7 @@ async def dice(ctx, *args):
     add_on = '0'
     #await sendmsg(ctx, randomnum(1,20))
 
+    #makes it like the origionl input
     message = '[]r ' + str(' '.join(args)).lower()
     print (message)
     
@@ -237,59 +238,6 @@ async def dice(ctx, *args):
 
 
 
-
-# this is from old turtle but i still love it
-async def conversate(message):
-    global cur_user
-
-    if "make me a sandwich" in message.content.lower(): # simple ping with a file
-        await sendmsgorig(message, "Here you go!")
-        await message.channel.send(file=discord.File('Sandwich.jpg'))
-
-    elif "bubble" in message.content.lower(): # simple ping
-        await sendmsgorig(message, "BUBBLES!")
-
-    elif "random" == message.content.lower():
-        await sendmsgorig(message, "RANDOM NUMBERS YOU SAY!?")
-        for a in range(randomnum(2,24)):
-            await sendmsgorig(message,randomnum(10,10000))
-        await sendmsgorig(message, "Fin.")
-
-    elif "what time is it" in message.content.lower():
-        await sendmsgorig(message, "TURTLE TIME!")
-        msg = "🐢"
-        for a in range(randomnum(2,24)):
-            msg = msg + "🐢"
-        await sendmsgorig(message, msg)
-
-    elif "i need an army" in message.content.lower():
-        await sendmsgorig(message, "On it boss!")
-        msg = "🐢"
-        rand = randomnum(100,200)
-        for a in range(rand):
-            msg = msg + "🐢"
-        await sendmsgorig(message, msg)
-        msg = "I was able to get " + str(rand) + " Turtles for the cause!"
-        await sendmsgorig(message, msg)
-
-    elif "yell at " in message.content.lower():
-        msg = ("They arnt here, sorry %s." % (message.author.name))
-        for users in bot.users:
-            for b in message.guild.members:
-                if b == users:
-                    if message.content.lower()[8:] in users.name.lower():
-                        msg = "Hey <@%s>! %s wants you." % (users.id,message.author.name)
-        await sendmsgorig(message, msg)
-
-    elif "help" in message.content.lower():
-        await sendmsgorig(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness..., help rase an army, get the time")
-        await sendmsgorig(message, "Helpful?")
-    elif "hi" in message.content.lower(): # simple ping
-        await sendmsgorig(message, "Hello!")
-    else:# simple ping
-        await sendmsgorig(message, "Ok then!") 
-    
-    cur_user = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Sound Commands ###################

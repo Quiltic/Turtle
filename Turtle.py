@@ -140,10 +140,11 @@ async def light(ctx, brightness = 100):
 
     global lights_info
     brightness = brightness/100 # how bright the lights are
+    await ctx.message.add_reaction("🐢")
 
     if await light_perms(ctx):
         #Turns off the lights
-        if ((ctx.author.id == lights_info["User"]) and (brightness == 1)):
+        if ((ctx.author.id == lights_info["User"]) and (lights_info["Color"] != [0,0,0])):
             await connect_lights(ctx, int(0), int(0), int(0))
             lights_info["User"] = 0
             lights_info["Color"] = [0,0,0]
@@ -284,8 +285,8 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
 
 
 @bot.command()
-async def timmer(ctx, delay = 5, tpe = 'sec'):
-    """Makes me set a timemer for # then 🐢
+async def timmer(ctx, delay = 5, tpe = 'sec', msg = None):
+    """Makes me set a timemer for # then ⏰
         Usage []timmer amount min/sec/hour
         Default is:  5 sec
     """
@@ -297,7 +298,10 @@ async def timmer(ctx, delay = 5, tpe = 'sec'):
     await ctx.send(("Counting down from: %s" % (delay)))
     await asyncio.sleep(delay)
     await ctx.send("Times up!")
-    await ctx.message.add_reaction("🐢")
+    await ctx.message.add_reaction("⏰")
+    if msg != None:
+        await ctx.send(msg)
+    
 
 
 @bot.command()
@@ -332,6 +336,7 @@ async def turtle(ctx):
 @bot.command()
 async def r(ctx, *args):
     """This rolls a # of dice and gives the output. Usage: []r 1d4 +4"""
+    await ctx.message.add_reaction("🎲")
     stuff = await dice(ctx, *args)
     await sendmsg(ctx,stuff)
 
@@ -344,6 +349,63 @@ async def Yell(ctx):
 async def GitURL(ctx):
     """This gives the git repository on github."""
     await ctx.send("My repository is: https://github.com/Quiltic/Turtle.git")
+
+
+
+# this is from old turtle but i still love it
+async def conversate(message):
+    global cur_user
+
+    if "make me a sandwich" in message.content.lower(): # simple ping with a file
+        await sendmsgorig(message, "Here you go!")
+        await message.channel.send(file=discord.File('Sandwich.jpg'))
+
+    elif "bubble" in message.content.lower(): # simple ping
+        await sendmsgorig(message, "BUBBLES!")
+
+    elif "random" == message.content.lower():
+        await sendmsgorig(message, "RANDOM NUMBERS YOU SAY!?")
+        for a in range(randomnum(2,24)):
+            await sendmsgorig(message,randomnum(10,10000))
+        await sendmsgorig(message, "Fin.")
+
+    elif "what time is it" in message.content.lower():
+        await sendmsgorig(message, "TURTLE TIME!")
+        msg = "🐢"
+        for a in range(randomnum(2,24)):
+            msg = msg + "🐢"
+        await sendmsgorig(message, msg)
+
+    elif "i need an army" in message.content.lower():
+        await sendmsgorig(message, "On it boss!")
+        msg = "🐢"
+        rand = randomnum(100,200)
+        for a in range(rand):
+            msg = msg + "🐢"
+        await sendmsgorig(message, msg)
+        msg = "I was able to get " + str(rand) + " Turtles for the cause!"
+        await sendmsgorig(message, msg)
+
+    elif "yell at " in message.content.lower():
+        msg = ("They arnt here, sorry %s." % (message.author.name))
+        for users in bot.users:
+            for b in message.guild.members:
+                if b == users:
+                    if message.content.lower()[8:] in users.name.lower():
+                        msg = "Hey <@%s>! %s wants you." % (users.id,message.author.name)
+        await sendmsgorig(message, msg)
+
+    elif "help" in message.content.lower():
+        await sendmsgorig(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness..., help rase an army, get the time")
+        await sendmsgorig(message, "Helpful?")
+    elif "hi" in message.content.lower(): # simple ping
+        await sendmsgorig(message, "Hello!")
+    else:# simple ping
+        await sendmsgorig(message, "Ok then!") 
+    
+    cur_user = 0
+
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
