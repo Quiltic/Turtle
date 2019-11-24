@@ -29,7 +29,7 @@ except:
 
 
 """ Basic startup for a discord bot"""
-prefix = '[]'
+prefix = ['[]', '[] ']
 bot = commands.Bot(prefix)#, connector=aiohttp.TCPConnector(ssl=False)
 curr_status = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
 
@@ -183,17 +183,18 @@ async def light(ctx, brightness = 100):
 
         #my color
         elif (ctx.author.id == bertle):
-            await connect_lights(ctx, int(220*brightness), int(255*brightness), int(190*brightness))  # Change the color
             lights_info["User"] = ctx.author.id
-            lights_info["Color"] = [220,255,190]
+            lights_info["Color"] = [int(220*brightness),int(255*brightness),int(190*brightness)]
+            await connect_lights(ctx, lights_info["Color"][0], lights_info["Color"][1], lights_info["Color"][2])  # Change the color
             await ctx.send("Changed!")
 
         #roomates color
         elif (ctx.author.id == 73486425349165056):
-            await connect_lights(ctx, int(255*brightness), int(130*brightness), int(10*brightness))  # Change the color
             lights_info["User"] = ctx.author.id
-            lights_info["Color"] = [255,130,10]
+            lights_info["Color"] = [int(255*brightness),int(130*brightness),int(10*brightness)]
+            await connect_lights(ctx, lights_info["Color"][0], lights_info["Color"][1], lights_info["Color"][2])  # Change the color
             await ctx.send("Changed!")
+
 
 
         else:
@@ -228,12 +229,13 @@ async def brightness(ctx, bright = 100):
     if await light_perms(ctx):
         top = 255-max(lights_info["Color"])#makes it into the highest values for the type of light basicly seting its brightness to 100%
         
+        bright = bright/100 # sets the brightness to a %
+
         #suposidly makes the colors into the max val and saves it, suposidly
         lights_info["Color"] = [int((lights_info["Color"][0]+top)*bright), int((lights_info["Color"][1]+top)*bright), int((lights_info["Color"][2]+top)*bright)]
         #for a in lights_info["Color"]:
         #    a += top
 
-        bright = bright/100
         await connect_lights(ctx, int(lights_info["Color"][0]), int(lights_info["Color"][1]), int(lights_info["Color"][2]))    
         #await connect_lights(ctx, int(lights_info["Color"][0]*bright), int(lights_info["Color"][1]*bright), int(lights_info["Color"][2]*bright)) # incase the above doesent work uncomment me
         await ctx.send("Brightness changed.")
@@ -580,6 +582,13 @@ async def on_message(message):
     elif "please" in message.content.lower(): 
         if message.author.id == bertle:
             await sendmsgorig(message, "PRETTY PLEASE!")
+
+
+    elif message.content.startswith("[] "): 
+        if message.author.id == bertle:
+            await sendmsgorig(message, "PRETTY PLEASE!")
+
+
 
     elif message.author == bot.user:
         print("Im talking:")
