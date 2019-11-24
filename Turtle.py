@@ -8,10 +8,12 @@
 from Tools import *
 
 try:
+    print("Trying to import discord!")
     os.system("python3 -m pip install --upgrade discord.py")
     import discord
     from discord.ext import commands
 except:
+    print("Cant import just recollecting it.")
     os.system("python3 -m pip install discord.py")
     import discord
     from discord.ext import commands
