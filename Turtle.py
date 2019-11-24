@@ -8,6 +8,7 @@
 from Tools import *
 
 try:
+    os.system("python3 -m pip install --upgrade discord.py")
     import discord
     from discord.ext import commands
 except:
@@ -311,10 +312,16 @@ async def connect_lights(ctx ,red = 0, green = 0, blue = 0):
 ###################### Custom Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+@bot.command()
+async def tofraction(ctx, des):
+    """ Given a decimal return a fraction """
+    outa, outb = fraction_finder(des)
+    await ctx.send("The decimal %s becomes %s/%s." % (des,outa, outb))
+    
 
 @bot.command()
 async def timmer(ctx, delay = 5, tpe = 'sec', msg = None):
-    """Makes me set a timemer for # then ⏰
+    """ Makes me set a timemer for # then ⏰
         Usage []timmer amount min/sec/hour
         Default is:  5 sec
     """

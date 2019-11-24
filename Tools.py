@@ -219,6 +219,20 @@ async def dice(ctx, *args):
 
 
 
+def fraction_finder(num, aprox = 20):
+    """ Given a decimal get the closest fraction """
+    top = 1
+    bottom = 1
+    for a in range(10000):
+        result = float(top/bottom)
+        if str(result)[:aprox] == str(num)[:aprox]:
+            return(top,bottom)
+        if (result < num):
+            top += 1
+        else:
+            bottom += 1
+    return(top,bottom)
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
