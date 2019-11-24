@@ -29,7 +29,7 @@ except:
 
 
 """ Basic startup for a discord bot"""
-prefix = ['[]', '[] ']
+prefix = ('[]', '[] ')
 bot = commands.Bot(prefix)#, connector=aiohttp.TCPConnector(ssl=False)
 curr_status = discord.Activity(name="turtle sounds. | []help", type=discord.ActivityType.listening)
 
