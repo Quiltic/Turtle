@@ -352,7 +352,7 @@ async def timmer(ctx, delay = 5, tpe = 'sec', msg = None):
 
     await ctx.send(("Counting down from: %s" % (delay)))
     await asyncio.sleep(delay)
-    await ctx.send("@{} Times up!".format(ctx.author.id))
+    await ctx.send("<@{}> Times up!".format(ctx.author.id))
     await ctx.message.add_reaction("⏰")
     if msg != None:
         await ctx.send(msg)
