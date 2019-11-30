@@ -19,6 +19,19 @@ except:
     from discord.ext import commands
 
 
+"""
+Todo:
+    Lighting for turthe
+    - check for sunrize/set
+    -  
+    Timmer
+    - add until x time, 
+
+
+
+
+"""
+
 
 #from pydub import AudioSegment
 #from guild_info import GuildInfo
@@ -175,7 +188,7 @@ async def light(ctx, brightness = 100):
 
     if await light_perms(ctx):
         #Turns off the lights
-        if ((ctx.author.id == lights_info["User"]) and (lights_info["Color"] != [0,0,0])):
+        if ((ctx.author.id == lights_info["User"]) and (max(lights_info["Color"]) == 255)):
             await connect_lights(ctx, int(0), int(0), int(0))
             lights_info["User"] = 0
             lights_info["Color"] = [0,0,0]
@@ -217,6 +230,7 @@ async def setcolor(ctx, red = 0, green = 0, blue = 0):
         
         msg = "Color set to %s, %s, %s." % (red,green,blue)
         await ctx.send(msg)
+        await ctx.message.add_reaction("💡")
 
         lights_info["User"] = ctx.author.id
         lights_info["Color"] = [red,green,blue]
@@ -252,6 +266,7 @@ async def color(ctx):
 @bot.command()
 async def fade(ctx , fade_time = 10, red_out = 255, blue_out = 255, green_out = 255, red_in = None, green_in = 0, blue_in = 0):
     """ Fades between two colors over x time (time reds_end greens_end blues_end begining_red begining_green begining_blue)"""
+    
     # So for some reason I cant just put this into the filler, thus it has to be done like this
     if red_in == None:
         red_in = lights_info["Color"][0]
@@ -259,6 +274,7 @@ async def fade(ctx , fade_time = 10, red_out = 255, blue_out = 255, green_out = 
         blue_in = lights_info["Color"][2]
     
     if light_perms(ctx):
+        await ctx.message.add_reaction("🌈")
         await fadebetween(ctx ,red_in, green_in, blue_in, red_out, blue_out, green_out, fade_time)
         await ctx.send("Faided!")
         
@@ -336,7 +352,8 @@ async def timmer(ctx, delay = 5, tpe = 'sec', msg = None):
 
     await ctx.send(("Counting down from: %s" % (delay)))
     await asyncio.sleep(delay)
-    await ctx.send("Times up!")
+    ctx.men
+    await ctx.send("@{} Times up!".format(ctx.author.id))
     await ctx.message.add_reaction("⏰")
     if msg != None:
         await ctx.send(msg)
