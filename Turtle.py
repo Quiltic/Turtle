@@ -51,7 +51,7 @@ cwd = os.getcwd()
 
 bertle = 275002179763306517 #my id  #bot.get_user(bot.owner_id)
 cur_user = 0 # the curent user that is talking to turtle
-
+pause = False
 
 lights_info = {"Color": [0,0,0], "On?": False, "Delay": 60, "User": 0} #all of the info for the lights
 
@@ -453,8 +453,6 @@ async def conversate(message):
     elif "help" in message.content.lower():
         await sendmsgorig(message, "I can yell at someone, make a sandwich, I like bubbles, and randomness..., help rase an army, get the time")
         await sendmsgorig(message, "Helpful?")
-    elif "hi" in message.content.lower(): # simple ping
-        await sendmsgorig(message, "Hello!")
     else:# simple ping
         await sendmsgorig(message, "Ok then!") 
     
@@ -576,10 +574,16 @@ class TurtleException(Exception):
 @bot.event
 async def on_message(message):
     global cur_user
+    global pause
 
     if message.content.startswith(prefix):
         print("Command!")
         print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
+
+    elif message.author == bot.user:
+        print("Im talking:")
+        print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
+
 
     elif message.author == cur_user:
         await conversate(message)
@@ -599,21 +603,33 @@ async def on_message(message):
         if message.author.id == bertle:
             await sendmsgorig(message, "PRETTY PLEASE!")
 
+    elif "hi turtle" in message.content.lower(): 
+        await sendmsgorig(message, "Hello!")
+
 
     elif message.content.startswith("[] "): 
         if message.author.id == bertle:
             await sendmsgorig(message, "PRETTY PLEASE!")
 
 
+    # so I can have multiple turtles running one on my laptop and one on the pi
+    elif "pause running turtle" in message.content.lower(): 
+        if message.author.id == bertle:
+            await sendmsgorig(message, "Paused.")
+            pause = True
+    
+    elif "play running turtle" in message.content.lower(): 
+        if message.author.id == bertle:
+            await sendmsgorig(message, "Playing!")
+            pause = False
 
-    elif message.author == bot.user:
-        print("Im talking:")
-        print(f'{message.author.name} - {message.guild} #{message.channel}: {message.content}')
+
+
     #else:
     #   print(message.content)
 
-
-    await bot.process_commands(message)
+    if not pause:
+        await bot.process_commands(message)
 
 
 if __name__ == '__main__':
