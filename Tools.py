@@ -121,11 +121,18 @@ def rename_file(old_filepath, new_filepath):
     os.rename(old_filepath, new_filepath)
 
 
-def getText(file):
+def printFile(file):
     """ Read a file and return the contense """
     with open(file, "r") as f:
         lines = f.read()
         return lines.strip()
+
+def SaveFile(NAME, data):
+    """ saves a file with the path/name NAME """
+    f = open(NAME,'w+')
+    f.writelines(data)
+    f.close()
+    return(True)
 
 
 

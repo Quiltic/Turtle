@@ -24,10 +24,11 @@ Todo:
     Lighting for turthe
     - check for sunrize/set
     -  
-    Timmer
-    - add until x time, 
+ 
 
-
+I used ‘’’ with md
+[]() makes blue & orange
+While things above a line of - are automatically blue
 
 
 """
@@ -458,8 +459,10 @@ async def conversate(message):
     
     cur_user = 0
 
-
-
+@bot.command()
+async def loadFile(ctx, NAME):
+    for l in printFile(NAME):
+        await ctx.send(l)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Sound Commands ###################
@@ -623,7 +626,21 @@ async def on_message(message):
             await sendmsgorig(message, "Playing!")
             pause = False
 
+    elif "turtle end me" in message.content.lower(): 
+        if message.author.id != bertle:
+            await sendmsgorig(message, "SMITE!")
+            await message.author.kick('SMITE!')
 
+    elif message.content.startswith("save "):
+        await sendmsg(message,"Not avalable yet.")
+
+        #data = message.content.split('\n')
+        #data = data[1:len(data)-1]
+        #SaveFile('data.txt', data)
+
+
+    else:
+        print(message.content.split('\n'))
 
     #else:
     #   print(message.content)
