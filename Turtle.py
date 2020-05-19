@@ -389,12 +389,12 @@ async def turtle(ctx):
     """Makes me react with 🐢"""
     await ctx.message.add_reaction("🐢")
 
-@bot.command()
-async def r(ctx, *args):
-    """This rolls a # of dice and gives the output. Usage: []r 1d4 +4"""
-    await ctx.message.add_reaction("🎲")
-    stuff = await dice(ctx, *args)
-    await sendmsg(ctx,stuff)
+#@bot.command()
+#async def r(ctx, *args):
+#    """This rolls a # of dice and gives the output. Usage: []r 1d4 +4"""
+#    await ctx.message.add_reaction("🎲")
+#    stuff = await dice(ctx, *args)
+#    await sendmsg(ctx,stuff)
 
 @bot.command()
 async def Yell(ctx):
@@ -467,7 +467,7 @@ async def loadFile(ctx, NAME):
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 ###################### Basic Sound Commands ###################
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
+'''
 async def connect_to_user(ctx):
     try:
         vc = ctx.voice_client
@@ -495,7 +495,7 @@ async def leave(ctx):
         #play_sound_file(sound, ctx.voice_client)
         time.sleep(1)
         await ctx.guild.voice_client.disconnect()
-
+'''
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -629,7 +629,7 @@ async def on_message(message):
     elif "turtle end me" in message.content.lower(): 
         if message.author.id != bertle:
             await sendmsgorig(message, "SMITE!")
-            await message.author.kick('SMITE!')
+            await message.author.kick()
 
     elif message.content.startswith("save "):
         await sendmsg(message,"Not avalable yet.")
